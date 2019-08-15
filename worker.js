@@ -25,7 +25,10 @@ process.stdin.on('end', function () {
         statusText: response.statusText
       }
     ])))
-    .catch(({ message, type, code }) => respond([message, type, { code }]))
+    .catch(error => {
+      const { message, type, code } = error
+      respond([error.constructor.name, [message, type, { code }]])
+    })
 })
 
 function respond (message) {

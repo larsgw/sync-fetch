@@ -2,6 +2,10 @@ const exec = require('child_process').execFileSync
 const path = require('path')
 const _fetch = require('node-fetch')
 
+const errors = {
+  TypeError
+}
+
 function fetch (resource, init) {
   const request = []
 
@@ -38,10 +42,12 @@ function fetch (resource, init) {
   // TODO credentials
 
   const response = JSON.parse(sendMessage(request))
-  if (response.length === 3) {
-    throw new fetch.FetchError(...response)
-  } else {
+  if ('headers' in response[1]) {
     return new fetch.Response(...response)
+  } else if (response[0] in errors) {
+    throw new errors[response[0]](...response[1])
+  } else {
+    throw new fetch.FetchError(...response[1])
   }
 }
 

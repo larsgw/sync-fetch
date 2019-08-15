@@ -1,5 +1,5 @@
 const http = require('http')
-const { URL } = require('url')
+const { parse } = require('url')
 const zlib = require('zlib')
 const { multipart: Multipart } = require('parted')
 
@@ -31,7 +31,7 @@ class TestServer {
   }
 
   router (req, res) {
-    const p = (new URL(req.url)).pathname
+    const p = parse(req.url).pathname
 
     if (p === '/hello') {
       res.statusCode = 200
@@ -379,11 +379,12 @@ class TestServer {
   }
 }
 
-module.exports = TestServer
-
+console.error(require.main)
 if (require.main === module) {
   const server = new TestServer()
   server.start(() => {
-    console.log(`Server started listening at port ${server.port}`)
+    console.log(`Server started listening at ${server.hostname}:${server.port}`)
   })
 }
+
+module.exports = TestServer

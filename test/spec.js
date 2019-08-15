@@ -15,14 +15,15 @@ const { URL } = require('whatwg-url')
 // import { AbortController } from 'abortcontroller-polyfill/dist/abortcontroller'
 // import AbortController2 from 'abort-controller'
 
-const TestServer = require('./server')
+// const TestServer = require('./server')
 const zlib = require('zlib')
 
 // test subjects
 const fetch = require('../')
 const { FetchError, Headers, Request, Response } = fetch
 
-// const { spawn } = require('child_process')
+const { spawn } = require('child_process')
+const { execFileSync } = require('child_process')
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
@@ -50,15 +51,20 @@ const supportToString = ({
 
 // const supportStreamDestroy = 'destroy' in stream.Readable.prototype
 
-const local = new TestServer()
-const base = `http://${local.hostname}:${local.port}/`
+let local
+let base
 
 before(done => {
-  local.start(done)
+  local = spawn(process.execPath, [path.join(__dirname, 'server.js')])
+  local.stdout.on('data', chunk => {
+    base = `http://${chunk.toString().split(' ').pop()}/`
+    done()
+  })
 })
 
 after(done => {
-  local.stop(done)
+  local.on('close', done)
+  local.kill()
 })
 
 describe('node-fetch', () => {
@@ -1579,7 +1585,7 @@ describe('node-fetch', () => {
 
   it('should support fetch with Node.js URL object', function () {
     const url = `${base}hello`
-    const urlObj = new url.URL(url)
+    const urlObj = url.parse(url)
     const req = new Request(urlObj)
     const res = fetch(req)
     expect(res.url).to.equal(url)

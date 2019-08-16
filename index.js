@@ -36,7 +36,7 @@ function fetch (resource, init) {
   }
 
   if (request[1].body) {
-    request[1].body = (new Body(init.body)).string()
+    request[1].body = parseBody(init.body).toString()
   }
 
   // TODO credentials
@@ -65,7 +65,7 @@ class Request extends _fetch.Request {
     if (init) {
       init = { ...init }
       if (init.body) {
-        init.body = (new Body(init.body)).buffer()
+        init.body = parseBody(init.body)
       }
     }
 
@@ -150,6 +150,30 @@ function defineBuffer (body, buffer) {
     value: buffer,
     enumerable: false
   })
+}
+
+function parseBody (body) {
+  // body is undefined or null
+  if (body == null) {
+    return null
+
+  // body is Buffer
+  } else if (Buffer.isBuffer(body)) {
+    return body
+
+  // body is ArrayBuffer
+  } else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
+    return Buffer.from(body)
+
+  // body is ArrayBufferView
+  } else if (ArrayBuffer.isView(body)) {
+    return Buffer.from(body.buffer, body.byteOffset, body.byteLength)
+
+  // none of the above
+  // coerce to string then buffer
+  } else {
+    return Buffer.from(String(body))
+  }
 }
 
 fetch.Headers = _fetch.Headers

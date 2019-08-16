@@ -79,6 +79,31 @@ class Request extends _fetch.Request {
     defineBuffer(clone, this.buffer())
     return clone
   }
+
+  arrayBuffer () {
+    super.arrayBuffer()
+    const buf = this[_body]
+    return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
+  }
+
+  text () {
+    super.text()
+    return this[_body].toString()
+  }
+
+  json () {
+    super.json()
+		try {
+			return JSON.parse(this.text())
+		} catch (err) {
+			throw new fetch.FetchError(`invalid json response body at ${this.url} reason: ${err.message}`, 'invalid-json')
+		}
+	}
+
+  buffer () {
+    super.buffer()
+    return Buffer.from(this[_body])
+  }
 }
 
 class Response extends _fetch.Response {
@@ -93,6 +118,31 @@ class Response extends _fetch.Response {
     defineBuffer(clone, this.buffer())
     return clone
   }
+
+  arrayBuffer () {
+    super.arrayBuffer()
+    const buf = this[_body]
+    return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
+  }
+
+  text () {
+    super.text()
+    return this[_body].toString()
+  }
+
+  json () {
+    super.json()
+		try {
+			return JSON.parse(this[_body].toString())
+		} catch (err) {
+			throw new fetch.FetchError(`invalid json response body at ${this.url} reason: ${err.message}`, 'invalid-json')
+		}
+	}
+
+  buffer () {
+    super.buffer()
+    return Buffer.from(this[_body])
+  }
 }
 
 function defineBuffer (body, buffer) {
@@ -101,64 +151,6 @@ function defineBuffer (body, buffer) {
     enumerable: false
   })
 }
-
-class Body {
-  // Body methods adapted from node-fetch/src/body.js
-  constructor (body) {
-    // body is undefined or null
-    if (body == null) {
-  		this[_body] = null
-
-    // body is Buffer
-  	} else if (Buffer.isBuffer(body)) {
-      this[_body] = body
-
-    // body is ArrayBuffer
-  	} else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
-  		this[_body] = Buffer.from(body)
-
-    // body is ArrayBufferView
-  	} else if (ArrayBuffer.isView(body)) {
-  		this[_body] = Buffer.from(body.buffer, body.byteOffset, body.byteLength)
-
-    // none of the above
-    // coerce to string then buffer
-  	} else {
-  		this[_body] = Buffer.from(String(body))
-  	}
-  }
-
-  arrayBuffer () {
-    const buf = this[_body]
-    return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
-  }
-
-  text () {
-    return this[_body].toString()
-  }
-
-  json () {
-		try {
-			return JSON.parse(this.text())
-		} catch (err) {
-			throw new fetch.FetchError(`invalid json response body at ${this.url} reason: ${err.message}`, 'invalid-json')
-		}
-	}
-
-  buffer () {
-    return Buffer.from(this[_body])
-  }
-}
-
-Body.mixIn = function (proto) {
-  for (const name of Object.getOwnPropertyNames(Body.prototype)) {
-    const desc = Object.getOwnPropertyDescriptor(Body.prototype, name)
-    Object.defineProperty(proto, name, desc)
-  }
-}
-
-Body.mixIn(Request.prototype)
-Body.mixIn(Response.prototype)
 
 fetch.Headers = _fetch.Headers
 fetch.FetchError = _fetch.FetchError

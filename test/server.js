@@ -379,7 +379,6 @@ class TestServer {
   }
 }
 
-console.error(require.main)
 if (require.main === module) {
   const server = new TestServer()
   server.start(() => {

@@ -20,6 +20,7 @@ process.stdin.on('end', function () {
     .then(response => response.buffer().then(buffer => respond([
       buffer.toString(),
       {
+        url: response.url,
         headers: response.headers.entries(),
         status: response.status,
         statusText: response.statusText

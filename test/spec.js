@@ -57,7 +57,7 @@ let base
 before(done => {
   local = spawn(process.execPath, [path.join(__dirname, 'server.js')])
   local.stdout.on('data', chunk => {
-    base = `http://${chunk.toString().split(' ').pop()}/`
+    base = `http://${chunk.toString().split(' ').pop().trim()}/`
     done()
   })
 })

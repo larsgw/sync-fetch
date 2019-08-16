@@ -32,7 +32,7 @@ function fetch (resource, init) {
   Object.assign(request[1], init)
 
   if (request[1].headers instanceof _fetch.Headers) {
-    request[1].headers = request[1].headers.entries()
+    request[1].headers = Array.from(request[1].headers)
   }
 
   if (request[1].body) {

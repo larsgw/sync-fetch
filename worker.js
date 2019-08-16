@@ -21,7 +21,7 @@ process.stdin.on('end', function () {
       buffer.toString(),
       {
         url: response.url,
-        headers: response.headers.entries(),
+        headers: Array.from(response.headers),
         status: response.status,
         statusText: response.statusText
       }

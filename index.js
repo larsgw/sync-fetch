@@ -59,17 +59,18 @@ const _bodyError = Symbol('bodyError')
 const _checkBody = Symbol('checkBody')
 
 class Request extends _fetch.Request {
-  constructor (resource, init = {}) {
-    const copy = { ...init }
-    if (init.body) {
-      copy.body = parseBody(init.body)
+  constructor (resource, init, bodyError) {
+    if (init) {
+      init = { ...init }
+      if (init.body) {
+        init.body = parseBody(init.body)
+      }
     }
-    delete copy.bodyError
 
     super(resource, init)
 
-    defineBuffer(this, init.body)
-    if (init.bodyError) defineBodyError(this, init.bodyError)
+    defineBuffer(this, init && init.body)
+    if (bodyError) defineBodyError(this, bodyError)
   }
 
   [_checkBody] () {
@@ -112,13 +113,11 @@ class Request extends _fetch.Request {
 }
 
 class Response extends _fetch.Response {
-  constructor (body, init = {}) {
+  constructor (body, init, bodyError) {
     const buffer = body == null ? null : Buffer.from(body)
-    const copy = { ...init }
-    delete copy.bodyError
-    super(buffer, copy)
+    super(buffer, init)
     defineBuffer(this, buffer)
-    if (init.bodyError) defineBodyError(this, init.bodyError)
+    if (bodyError) defineBodyError(this, bodyError)
   }
 
   [_checkBody] () {

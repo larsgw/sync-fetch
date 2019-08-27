@@ -24,20 +24,20 @@ process.stdin.on('end', function () {
       ]))
       .catch(error => respond([
         '',
-        serializeResponse(response, serializeError(error))
+        serializeResponse(response),
+        serializeError(error)
       ]))
     )
     .catch(error => respond(serializeError(error)))
 })
 
-function serializeResponse (response, bodyError) {
+function serializeResponse (response) {
   return {
     url: response.url,
     headers: Array.from(response.headers),
     status: response.status,
     statusText: response.statusText,
-    counter: response.redirected ? 1 : 0, // could be more than one, but no way of telling
-    bodyError
+    counter: response.redirected ? 1 : 0 // could be more than one, but no way of telling
   }
 }
 

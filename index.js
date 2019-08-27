@@ -114,7 +114,7 @@ class Request extends _fetch.Request {
 
 class Response extends _fetch.Response {
   constructor (body, init, bodyError) {
-    const buffer = body == null ? null : Buffer.from(body)
+    const buffer = parseBody(body)
     super(buffer, init)
     defineBuffer(this, buffer)
     if (bodyError) defineBodyError(this, bodyError)

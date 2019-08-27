@@ -5,7 +5,7 @@
 const chai = require('chai')
 // import url.URLSearchParams(mised from 'chai-as-promised'
 // import chaiIterator from 'chai-iterator'
-// import chaiString from 'chai-string'
+const chaiString = require('chai-string')
 // import then from 'promise'
 const resumer = require('resumer')
 const FormData = require('form-data')
@@ -42,7 +42,7 @@ try { convert = require('encoding').convert } catch (e) { }
 
 // chai.use(chaiPromised)
 // chai.use(chaiIterator)
-// chai.use(chaiString)
+chai.use(chaiString)
 const expect = chai.expect
 
 const supportToString = ({

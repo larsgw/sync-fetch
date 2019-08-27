@@ -77,6 +77,9 @@ class Request extends _fetch.Request {
     if (this[_bodyError]) {
       throw this[_bodyError]
     }
+    if (this.bodyUsed) {
+      throw new TypeError(`body used already for: ${this.url}`)
+    }
     super.buffer()
   }
 
@@ -123,6 +126,9 @@ class Response extends _fetch.Response {
   [_checkBody] () {
     if (this[_bodyError]) {
       throw this[_bodyError]
+    }
+    if (this.bodyUsed) {
+      throw new TypeError(`body used already for: ${this.url}`)
     }
     super.buffer()
   }

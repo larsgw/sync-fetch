@@ -34,7 +34,7 @@ function fetch (resource, init) {
 
   if (request[1].body) {
     request[1].body = parseBody(init.body).toString()
-    request[2].bodyIsString = typeof init.body === 'string'
+    request[2].bodyIsString = parseBodyType(init.body) === 'String'
   }
 
   // TODO credentials
@@ -185,27 +185,27 @@ function defineBodyError (body, error) {
   })
 }
 
-function parseBody (body) {
-  // body is undefined or null
+function parseBodyType (body) {
   if (body == null) {
-    return null
-
-  // body is Buffer
+    return 'Null'
   } else if (Buffer.isBuffer(body)) {
-    return body
-
-  // body is ArrayBuffer
+    return 'Buffer'
   } else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
-    return Buffer.from(body)
-
-  // body is ArrayBufferView
+    return 'ArrayBuffer'
   } else if (ArrayBuffer.isView(body)) {
-    return Buffer.from(body.buffer, body.byteOffset, body.byteLength)
-
-  // none of the above
-  // coerce to string then buffer
+    return 'ArrayBufferView'
   } else {
-    return Buffer.from(String(body))
+    return 'String'
+  }
+}
+
+function parseBody (body) {
+  switch (parseBodyType(body)) {
+    case 'Null': return null
+    case 'Buffer': return body
+    case 'ArrayBuffer': return Buffer.from(body)
+    case 'ArrayBufferView': return Buffer.from(body.buffer, body.byteOffset, body.byteLength)
+    case 'String': return Buffer.from(String(body))
   }
 }
 

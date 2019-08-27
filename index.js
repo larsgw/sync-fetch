@@ -81,20 +81,20 @@ class Request extends _fetch.Request {
   }
 
   arrayBuffer () {
-    super.arrayBuffer()
+    super.buffer()
     const buf = this[_body]
     return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
   }
 
   text () {
-    super.text()
+    super.buffer()
     return this[_body].toString()
   }
 
   json () {
-    super.json()
+    super.buffer()
 		try {
-			return JSON.parse(this.text())
+			return JSON.parse(this[_body].toString())
 		} catch (err) {
 			throw new fetch.FetchError(`invalid json response body at ${this.url} reason: ${err.message}`, 'invalid-json')
 		}
@@ -120,18 +120,18 @@ class Response extends _fetch.Response {
   }
 
   arrayBuffer () {
-    super.arrayBuffer()
+    super.buffer()
     const buf = this[_body]
     return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
   }
 
   text () {
-    super.text()
+    super.buffer()
     return this[_body].toString()
   }
 
   json () {
-    super.json()
+    super.buffer()
 		try {
 			return JSON.parse(this[_body].toString())
 		} catch (err) {

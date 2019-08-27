@@ -11,12 +11,12 @@ process.stdin.on('data', function (chunk) {
 })
 
 process.stdin.on('end', function () {
-  const input = JSON.parse(chunks.join())
-  if (input[1].body) {
-    input[1].body = Buffer.from(input[1].body)
+  const [resource, init, options] = JSON.parse(chunks.join())
+  if (init.body && !options.bodyIsString) {
+    init.body = Buffer.from(init.body)
   }
 
-  fetch(...input)
+  fetch(resource, init)
     .then(response => response.buffer()
       .then(buffer => respond([
         buffer.toString(),

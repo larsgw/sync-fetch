@@ -26,6 +26,7 @@ function fetch (resource, init) {
   }
 
   Object.assign(request[1], init)
+  request.push({})
 
   if (request[1].headers instanceof _fetch.Headers) {
     request[1].headers = Array.from(request[1].headers)
@@ -33,6 +34,7 @@ function fetch (resource, init) {
 
   if (request[1].body) {
     request[1].body = parseBody(init.body).toString()
+    request[2].bodyIsString = typeof init.body === 'string'
   }
 
   // TODO credentials

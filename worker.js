@@ -17,21 +17,36 @@ process.stdin.on('end', function () {
   }
 
   fetch(...input)
-    .then(response => response.buffer().then(buffer => respond([
-      buffer.toString(),
-      {
-        url: response.url,
-        headers: Array.from(response.headers),
-        status: response.status,
-        statusText: response.statusText,
-        counter: response.redirected ? 1 : 0 // could be more than one, but no way of telling
-      }
-    ])))
-    .catch(error => {
-      const { message, type, code } = error
-      respond([error.constructor.name, [message, type, { code }]])
-    })
+    .then(response => response.buffer()
+      .then(buffer => respond([
+        buffer.toString(),
+        serializeResponse(response)
+      ]))
+      .catch(error => respond([
+        '',
+        serializeResponse(response, serializeError(error))
+      ]))
+    )
+    .catch(error => respond(serializeError(error)))
 })
+
+function serializeResponse (response, bodyError) {
+  return {
+    url: response.url,
+    headers: Array.from(response.headers),
+    status: response.status,
+    statusText: response.statusText,
+    counter: response.redirected ? 1 : 0, // could be more than one, but no way of telling
+    bodyError
+  }
+}
+
+function serializeError ({ constructor, message, type, code }) {
+  return [
+    constructor.name,
+    [message, type, { code }]
+  ]
+}
 
 function respond (message) {
   console.log(JSON.stringify(message))

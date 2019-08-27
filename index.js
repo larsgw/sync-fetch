@@ -2,10 +2,6 @@ const exec = require('child_process').execFileSync
 const path = require('path')
 const _fetch = require('node-fetch')
 
-const errors = {
-  TypeError
-}
-
 function fetch (resource, init) {
   const request = []
 
@@ -44,10 +40,8 @@ function fetch (resource, init) {
   const response = JSON.parse(sendMessage(request))
   if ('headers' in response[1]) {
     return new fetch.Response(...response)
-  } else if (response[0] in errors) {
-    throw new errors[response[0]](...response[1])
   } else {
-    throw new fetch.FetchError(...response[1])
+    throw deserializeError(...response)
   }
 }
 
@@ -59,19 +53,28 @@ function sendMessage (message) {
 }
 
 const _body = Symbol('bodyBuffer')
+const _bodyError = Symbol('bodyError')
+const _checkBody = Symbol('checkBody')
 
 class Request extends _fetch.Request {
-  constructor (resource, init) {
-    if (init) {
-      init = { ...init }
-      if (init.body) {
-        init.body = parseBody(init.body)
-      }
+  constructor (resource, init = {}) {
+    const copy = { ...init }
+    if (init.body) {
+      copy.body = parseBody(init.body)
     }
+    delete copy.bodyError
 
     super(resource, init)
 
-    defineBuffer(this, init && init.body)
+    defineBuffer(this, init.body)
+    if (init.bodyError) defineBodyError(this, init.bodyError)
+  }
+
+  [_checkBody] () {
+    if (this[_bodyError]) {
+      throw this[_bodyError]
+    }
+    super.buffer()
   }
 
   clone () {
@@ -81,18 +84,18 @@ class Request extends _fetch.Request {
   }
 
   arrayBuffer () {
-    super.buffer()
+    this[_checkBody]()
     const buf = this[_body]
     return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
   }
 
   text () {
-    super.buffer()
+    this[_checkBody]()
     return this[_body].toString()
   }
 
   json () {
-    super.buffer()
+    this[_checkBody]()
 		try {
 			return JSON.parse(this[_body].toString())
 		} catch (err) {
@@ -101,16 +104,26 @@ class Request extends _fetch.Request {
 	}
 
   buffer () {
-    super.buffer()
+    this[_checkBody]()
     return Buffer.from(this[_body])
   }
 }
 
 class Response extends _fetch.Response {
-  constructor (body, init) {
+  constructor (body, init = {}) {
     const buffer = body == null ? null : Buffer.from(body)
-    super(buffer, init)
+    const copy = { ...init }
+    delete copy.bodyError
+    super(buffer, copy)
     defineBuffer(this, buffer)
+    if (init.bodyError) defineBodyError(this, init.bodyError)
+  }
+
+  [_checkBody] () {
+    if (this[_bodyError]) {
+      throw this[_bodyError]
+    }
+    super.buffer()
   }
 
   clone () {
@@ -120,18 +133,18 @@ class Response extends _fetch.Response {
   }
 
   arrayBuffer () {
-    super.buffer()
+    this[_checkBody]()
     const buf = this[_body]
     return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
   }
 
   text () {
-    super.buffer()
+    this[_checkBody]()
     return this[_body].toString()
   }
 
   json () {
-    super.buffer()
+    this[_checkBody]()
 		try {
 			return JSON.parse(this[_body].toString())
 		} catch (err) {
@@ -140,14 +153,33 @@ class Response extends _fetch.Response {
 	}
 
   buffer () {
-    super.buffer()
+    this[_checkBody]()
     return Buffer.from(this[_body])
+  }
+}
+
+const errors = {
+  TypeError
+}
+
+function deserializeError (name, init) {
+  if (name in errors) {
+    return new errors[name](...init)
+  } else {
+    return new fetch.FetchError(...init)
   }
 }
 
 function defineBuffer (body, buffer) {
   Object.defineProperty(body, _body, {
     value: buffer,
+    enumerable: false
+  })
+}
+
+function defineBodyError (body, error) {
+  Object.defineProperty(body, _bodyError, {
+    value: deserializeError(...error),
     enumerable: false
   })
 }

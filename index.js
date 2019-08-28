@@ -99,7 +99,7 @@ class Request extends _fetch.Request {
 class Response extends _fetch.Response {
   constructor (body, init, bodyError) {
     const buffer = parseBody(body)
-    super(createStream(buffer), init)
+    super(body ? createStream(buffer) : null, init)
     defineBuffer(this, buffer)
     if (bodyError) defineBodyError(this, bodyError)
   }
@@ -169,7 +169,7 @@ function checkBody (body) {
 
 function consumeBody (body) {
   _super(body, 'buffer')().catch(error => console.error(error))
-  return body[_body]
+  return body[_body] || Buffer.alloc(0)
 }
 
 function deserializeResponse (body, init, bodyError) {

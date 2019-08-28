@@ -1,5 +1,6 @@
 const exec = require('child_process').execFileSync
 const path = require('path')
+const Stream = require('stream')
 const _fetch = require('node-fetch')
 
 function fetch (resource, init) {
@@ -61,16 +62,18 @@ const _checkBody = Symbol('checkBody')
 
 class Request extends _fetch.Request {
   constructor (resource, init, bodyError) {
+    let buffer
     if (init) {
       init = { ...init }
       if (init.body) {
-        init.body = parseBody(init.body)
+        buffer = parseBody(init.body)
+        init.body = createStream(buffer)
       }
     }
 
     super(resource, init)
 
-    defineBuffer(this, init && init.body)
+    defineBuffer(this, buffer)
     if (bodyError) defineBodyError(this, bodyError)
   }
 
@@ -119,7 +122,7 @@ class Request extends _fetch.Request {
 class Response extends _fetch.Response {
   constructor (body, init, bodyError) {
     const buffer = parseBody(body)
-    super(buffer, init)
+    super(createStream(buffer), init)
     defineBuffer(this, buffer)
     if (bodyError) defineBodyError(this, bodyError)
   }
@@ -217,6 +220,15 @@ function parseBody (body, type = parseBodyType(body)) {
     case 'String': return Buffer.from(String(body))
     default: throw new TypeError(`sync-fetch does not support bodies of type: ${type}`)
   }
+}
+
+function createStream (buffer) {
+  return new Stream.Transform({
+    read () {
+      this.push(buffer)
+      this.push(null)
+    }
+  })
 }
 
 fetch.Headers = _fetch.Headers

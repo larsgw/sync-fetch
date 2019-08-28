@@ -168,7 +168,7 @@ function checkBody (body) {
 }
 
 function consumeBody (body) {
-  _super(body, 'buffer')()
+  _super(body, 'buffer')().catch(error => console.error(error))
   return body[_body]
 }
 

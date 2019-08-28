@@ -6,8 +6,10 @@ const shared = require('./shared')
 function fetch (resource, init) {
   const request = []
 
-  if (typeof resource === 'object') {
+  if (resource instanceof fetch.Request) {
     request.push(...shared.serializeRequest(resource))
+  } else if (resource instanceof URL) {
+    request.push(resource.href, {})
   } else {
     request.push(resource, {})
   }

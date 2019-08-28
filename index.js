@@ -54,10 +54,7 @@ class Request extends _fetch.Request {
   constructor (resource, init = {}) {
     const buffer = shared.parseBody(init.body)
 
-    super(resource, {
-      ...init,
-      body: init.body != null ? shared.createStream(buffer) : undefined
-    })
+    super(resource, init)
     defineBuffer(this, buffer)
   }
 

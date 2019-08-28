@@ -97,7 +97,7 @@ class Body {
 
   clone () {
     const clone = _super(this, 'clone')()
-    defineBuffer(clone, this.buffer())
+    defineBuffer(clone, Buffer.from(this[_body]))
     return clone
   }
 

@@ -94,7 +94,10 @@ class Body {
   static mixin (proto) {
     for (const name of Object.getOwnPropertyNames(Body.prototype)) {
       const desc = Object.getOwnPropertyDescriptor(Body.prototype, name)
-      Object.defineProperty(proto, name, desc)
+      Object.defineProperty(proto, name, {
+        ...desc,
+        enumerable: true
+      })
     }
   }
 

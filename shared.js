@@ -29,7 +29,14 @@ function serializeRequest (request) {
       referrerPolicy: request.referrerPolicy,
       integrity: request.integrity,
       keepalive: request.keepalive,
-      // signal: request.signal
+      // signal: request.signal,
+
+      // node-fetch props
+      follow: request.follow,
+      timeout: request.timeout,
+      compress: request.compress,
+      size: request.size,
+      // agent: request.agent
     }
   ]
 }

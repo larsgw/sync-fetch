@@ -76,6 +76,24 @@ class Request extends _fetch.Request {
     defineBuffer(this, buffer)
     if (bodyError) defineBodyError(this, bodyError)
   }
+
+  clone () {
+    checkBody(this)
+    return new Request(this.url, {
+      method: this.method,
+      headers: this.headers,
+      body: Buffer.from(this[_body]),
+      mode: this.mode,
+      credentials: this.credentials,
+      cache: this.cache,
+      redirect: this.redirect,
+      referrer: this.referrer,
+      referrerPolicy: this.referrerPolicy,
+      integrity: this.integrity,
+      keepalive: this.keepalive,
+      // signal: this.signal
+    })
+  }
 }
 
 class Response extends _fetch.Response {
@@ -85,6 +103,17 @@ class Response extends _fetch.Response {
     defineBuffer(this, buffer)
     if (bodyError) defineBodyError(this, bodyError)
   }
+
+  clone () {
+    checkBody(this)
+    return new Response(Buffer.from(this[_body]), {
+      url: this.url,
+      headers: Array.from(this.headers),
+      status: this.status,
+      statusText: this.statusText,
+      counter: this.redirected ? 1 : 0
+    }, this[_bodyError])
+  }
 }
 
 class Body {
@@ -93,12 +122,6 @@ class Body {
       const desc = Object.getOwnPropertyDescriptor(Body.prototype, name)
       Object.defineProperty(proto, name, desc)
     }
-  }
-
-  clone () {
-    const clone = _super(this, 'clone')()
-    defineBuffer(clone, Buffer.from(this[_body]))
-    return clone
   }
 
   arrayBuffer () {

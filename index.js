@@ -167,6 +167,8 @@ function defineBodyError (body, error) {
 
 Body.mixin(Request.prototype)
 Body.mixin(Response.prototype)
+Object.defineProperties(Request.prototype, { clone: { enumerable: true } })
+Object.defineProperties(Response.prototype, { clone: { enumerable: true } })
 
 fetch.Headers = _fetch.Headers
 fetch.FetchError = _fetch.FetchError

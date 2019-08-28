@@ -76,47 +76,6 @@ class Request extends _fetch.Request {
     defineBuffer(this, buffer)
     if (bodyError) defineBodyError(this, bodyError)
   }
-
-  [_checkBody] () {
-    if (this[_bodyError]) {
-      throw this[_bodyError]
-    }
-    if (this.bodyUsed) {
-      throw new TypeError(`body used already for: ${this.url}`)
-    }
-    super.buffer()
-  }
-
-  clone () {
-    const clone = super.clone()
-    defineBuffer(clone, this.buffer())
-    return clone
-  }
-
-  arrayBuffer () {
-    this[_checkBody]()
-    const buf = this[_body]
-    return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
-  }
-
-  text () {
-    this[_checkBody]()
-    return this[_body].toString()
-  }
-
-  json () {
-    this[_checkBody]()
-		try {
-			return JSON.parse(this[_body].toString())
-		} catch (err) {
-			throw new fetch.FetchError(`invalid json response body at ${this.url} reason: ${err.message}`, 'invalid-json')
-		}
-	}
-
-  buffer () {
-    this[_checkBody]()
-    return Buffer.from(this[_body])
-  }
 }
 
 class Response extends _fetch.Response {
@@ -126,36 +85,35 @@ class Response extends _fetch.Response {
     defineBuffer(this, buffer)
     if (bodyError) defineBodyError(this, bodyError)
   }
+}
 
-  [_checkBody] () {
-    if (this[_bodyError]) {
-      throw this[_bodyError]
+class Body {
+  static mixin (proto) {
+    for (const name of Object.getOwnPropertyNames(Body.prototype)) {
+      const desc = Object.getOwnPropertyDescriptor(Body.prototype, name)
+      Object.defineProperty(proto, name, desc)
     }
-    if (this.bodyUsed) {
-      throw new TypeError(`body used already for: ${this.url}`)
-    }
-    super.buffer()
   }
 
   clone () {
-    const clone = super.clone()
+    const clone = _super(this, 'clone')()
     defineBuffer(clone, this.buffer())
     return clone
   }
 
   arrayBuffer () {
-    this[_checkBody]()
+    checkBody(this)
     const buf = this[_body]
     return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
   }
 
   text () {
-    this[_checkBody]()
+    checkBody(this)
     return this[_body].toString()
   }
 
   json () {
-    this[_checkBody]()
+    checkBody(this)
 		try {
 			return JSON.parse(this[_body].toString())
 		} catch (err) {
@@ -164,13 +122,28 @@ class Response extends _fetch.Response {
 	}
 
   buffer () {
-    this[_checkBody]()
+    checkBody(this)
     return Buffer.from(this[_body])
   }
 }
 
+function _super (self, method) {
+  return Object.getPrototypeOf(Object.getPrototypeOf(self))[method].bind(self)
+}
+
 const errors = {
   TypeError
+}
+
+function checkBody (body) {
+  if (body[_bodyError]) {
+    throw body[_bodyError]
+  }
+  if (body.bodyUsed) {
+    throw new TypeError(`body used already for: ${body.url}`)
+  }
+
+  _super(body, 'buffer')()
 }
 
 function deserializeError (name, init) {
@@ -230,6 +203,9 @@ function createStream (buffer) {
     }
   })
 }
+
+Body.mixin(Request.prototype)
+Body.mixin(Response.prototype)
 
 fetch.Headers = _fetch.Headers
 fetch.FetchError = _fetch.FetchError

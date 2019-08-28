@@ -126,19 +126,19 @@ class Body {
 
   arrayBuffer () {
     checkBody(this)
-    const buf = this[_body]
+    const buf = consumeBody(this)
     return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
   }
 
   text () {
     checkBody(this)
-    return this[_body].toString()
+    return consumeBody(this).toString()
   }
 
   json () {
     checkBody(this)
 		try {
-			return JSON.parse(this[_body].toString())
+			return JSON.parse(consumeBody(this).toString())
 		} catch (err) {
 			throw new fetch.FetchError(`invalid json response body at ${this.url} reason: ${err.message}`, 'invalid-json')
 		}
@@ -146,7 +146,7 @@ class Body {
 
   buffer () {
     checkBody(this)
-    return Buffer.from(this[_body])
+    return Buffer.from(consumeBody(this))
   }
 }
 
@@ -165,8 +165,11 @@ function checkBody (body) {
   if (body.bodyUsed) {
     throw new TypeError(`body used already for: ${body.url}`)
   }
+}
 
+function consumeBody (body) {
   _super(body, 'buffer')()
+  return body[_body]
 }
 
 function deserializeError (name, init) {

@@ -3,14 +3,14 @@
 
 // test tools
 const chai = require('chai')
-// import url.URLSearchParams(mised from 'chai-as-promised'
+// import chaiPromised from 'chai-as-promised'
 const chaiIterator = require('chai-iterator')
 const chaiString = require('chai-string')
 // import then from 'promise'
 const resumer = require('resumer')
 const FormData = require('form-data')
 const stringToArrayBuffer = require('string-to-arraybuffer')
-// import URLSearchParams_Polyfill from '@ungap/url-search-params'
+const URLSearchParams_Polyfill = require('@ungap/url-search-params')
 const { URL } = require('whatwg-url')
 // import { AbortController } from 'abortcontroller-polyfill/dist/abortcontroller'
 // import AbortController2 from 'abort-controller'

@@ -34,7 +34,7 @@ process.stdin.on('end', function () {
 function serializeResponse (response) {
   return {
     url: response.url,
-    headers: Array.from(response.headers),
+    headers: response.headers.raw(),
     status: response.status,
     statusText: response.statusText,
     counter: response.redirected ? 1 : 0 // could be more than one, but no way of telling

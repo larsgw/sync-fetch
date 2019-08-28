@@ -43,7 +43,7 @@ function fetch (resource, init) {
 
   const response = JSON.parse(sendMessage(request))
   if ('headers' in response[1]) {
-    return new fetch.Response(...response)
+    return deserializeResponse(...response)
   } else {
     throw deserializeError(...response)
   }
@@ -170,6 +170,22 @@ function checkBody (body) {
 function consumeBody (body) {
   _super(body, 'buffer')().catch(error => console.error(error))
   return body[_body]
+}
+
+function deserializeResponse (body, init, bodyError) {
+  const headers = new fetch.Headers()
+  if (init.headers) {
+    for (let name in init.headers) {
+      for (let value of init.headers[name]) {
+        headers.append(name, value)
+      }
+    }
+  }
+
+  return new fetch.Response(body, {
+    ...init,
+    headers
+  }, bodyError)
 }
 
 function deserializeError (name, init) {

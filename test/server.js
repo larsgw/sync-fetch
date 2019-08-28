@@ -1,7 +1,7 @@
 const http = require('http')
-const { parse } = require('url')
+const URL = require('url').URL
 const zlib = require('zlib')
-const { multipart: Multipart } = require('parted')
+const Multipart = require('parted').multipart
 
 let convert
 try { convert = require('encoding').convert } catch (e) {}
@@ -31,7 +31,7 @@ class TestServer {
   }
 
   router (req, res) {
-    const p = parse(req.url).pathname
+    const p = (new URL(req.url)).pathname
 
     if (p === '/hello') {
       res.statusCode = 200
@@ -70,6 +70,7 @@ class TestServer {
       res.setHeader('Content-Type', 'text/plain')
       res.setHeader('Content-Encoding', 'gzip')
       zlib.gzip('hello world', function (err, buffer) {
+        console.error(err)
         res.end(buffer)
       })
     }
@@ -79,6 +80,7 @@ class TestServer {
       res.setHeader('Content-Type', 'text/plain')
       res.setHeader('Content-Encoding', 'gzip')
       zlib.gzip('hello world', function (err, buffer) {
+        console.error(err)
         // truncate the CRC checksum and size check at the end of the stream
         res.end(buffer.slice(0, buffer.length - 8))
       })
@@ -89,6 +91,7 @@ class TestServer {
       res.setHeader('Content-Type', 'text/plain')
       res.setHeader('Content-Encoding', 'deflate')
       zlib.deflate('hello world', function (err, buffer) {
+        console.error(err)
         res.end(buffer)
       })
     }
@@ -99,6 +102,7 @@ class TestServer {
       if (typeof zlib.createBrotliDecompress === 'function') {
         res.setHeader('Content-Encoding', 'br')
         zlib.brotliCompress('hello world', function (err, buffer) {
+          console.error(err)
           res.end(buffer)
         })
       }
@@ -109,6 +113,7 @@ class TestServer {
       res.setHeader('Content-Type', 'text/plain')
       res.setHeader('Content-Encoding', 'deflate')
       zlib.deflateRaw('hello world', function (err, buffer) {
+        console.error(err)
         res.end(buffer)
       })
     }

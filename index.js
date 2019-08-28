@@ -50,7 +50,6 @@ function extractContentType (input) {
 
 const _body = Symbol('bodyBuffer')
 const _bodyError = Symbol('bodyError')
-const _checkBody = Symbol('checkBody')
 
 class Request extends _fetch.Request {
   constructor (resource, init = {}) {
@@ -116,12 +115,12 @@ class Body {
 
   json () {
     checkBody(this)
-		try {
-			return JSON.parse(consumeBody(this).toString())
-		} catch (err) {
-			throw new fetch.FetchError(`invalid json response body at ${this.url} reason: ${err.message}`, 'invalid-json')
-		}
-	}
+    try {
+      return JSON.parse(consumeBody(this).toString())
+    } catch (err) {
+      throw new fetch.FetchError(`invalid json response body at ${this.url} reason: ${err.message}`, 'invalid-json')
+    }
+  }
 
   buffer () {
     checkBody(this)

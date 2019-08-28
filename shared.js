@@ -6,8 +6,8 @@ function serializeHeaders (headers) {
 
 function deserializeHeaders (fetch, old = {}) {
   const headers = new fetch.Headers()
-  for (let name in old) {
-    for (let value of old[name]) {
+  for (const name in old) {
+    for (const value of old[name]) {
       headers.append(name, value)
     }
   }
@@ -35,7 +35,7 @@ function serializeRequest (request) {
       follow: request.follow,
       timeout: request.timeout,
       compress: request.compress,
-      size: request.size,
+      size: request.size
       // agent: request.agent
     }
   ]
@@ -106,8 +106,8 @@ function parseBodyType (body) {
   } else if (ArrayBuffer.isView(body)) {
     return 'ArrayBufferView'
   } else if (body instanceof Stream) {
-		return 'Stream'
-	} else {
+    return 'Stream'
+  } else {
     return 'String'
   }
 }

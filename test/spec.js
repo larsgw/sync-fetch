@@ -10,7 +10,7 @@ const chaiString = require('chai-string')
 const resumer = require('resumer')
 const FormData = require('form-data')
 const stringToArrayBuffer = require('string-to-arraybuffer')
-const URLSearchParams_Polyfill = require('@ungap/url-search-params')
+const URLSearchParamsPolyfill = require('@ungap/url-search-params')
 const { URL } = require('whatwg-url')
 const zlib = require('zlib')
 
@@ -19,7 +19,6 @@ const fetch = require('../')
 const { FetchError, Headers, Request, Response } = fetch
 
 const { spawn } = require('child_process')
-const { execFileSync } = require('child_process')
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
@@ -53,6 +52,7 @@ after(done => {
 })
 
 describe('node-fetch', () => {
+  /* eslint-disable */
   it.skip('should return a promise', function () {
     const url = `${base}hello`
     const p = fetch(url)
@@ -78,13 +78,14 @@ describe('node-fetch', () => {
     }).to.throw(Error)
     fetch.Promise = old
   })
+  /* eslint-enable */
 
   it('should expose Headers, Response and Request constructors', function () {
     expect(FetchError).to.be.a('function')
     expect(Headers).to.be.a('function')
     expect(Response).to.be.a('function')
     expect(Request).to.be.a('function')
-  });
+  })
 
   it('should support proper toString output for Headers, Response and Request objects', function () {
     expect(new Headers().toString()).to.equal('[object Headers]')
@@ -324,6 +325,7 @@ describe('node-fetch', () => {
     expect(result.body).to.equal('a=1')
   })
 
+  /* eslint-disable */
   it.skip('should not follow non-GET redirect if body is a readable stream', function () {
     const url = `${base}redirect/307`
     const opts = {
@@ -333,6 +335,7 @@ describe('node-fetch', () => {
     expect(() => fetch(url, opts)).to.throw(FetchError)
       .that.has.property('type', 'unsupported-redirect')
   })
+  /* eslint-enable */
 
   it('should obey maximum redirect, reject case', function () {
     const url = `${base}redirect/chain`
@@ -435,6 +438,7 @@ describe('node-fetch', () => {
     expect(res.redirected).to.be.false
   })
 
+  /* eslint-disable */
   it.skip('should ignore invalid headers', function () {
     var headers = {
       'Invalid-Header ': 'abc\r\n',
@@ -446,6 +450,7 @@ describe('node-fetch', () => {
     expect(headers).to.not.have.property('Invalid-Header-Value')
     expect(headers).to.not.have.property('Set-Cookie')
   })
+  /* eslint-enable */
 
   it('should handle client-error response', function () {
     const url = `${base}error/400`
@@ -720,6 +725,7 @@ describe('node-fetch', () => {
       })
   })
 
+  /* eslint-disable */
   it.skip('should support request cancellation with signal', function () {
     this.timeout(500)
     const controller = new AbortController()
@@ -928,7 +934,7 @@ describe('node-fetch', () => {
     controller.abort()
 
     return result
-  });
+  })
 
   it.skip('should immediately reject when attempting to cancel streamed Requests in node < 8', () => {
     const controller = new AbortController()
@@ -960,6 +966,7 @@ describe('node-fetch', () => {
         .and.have.property('message').includes('AbortSignal')
     ])
   })
+  /* eslint-enable */
 
   it('should set default User-Agent', function () {
     const url = `${base}inspect`
@@ -1119,6 +1126,7 @@ describe('node-fetch', () => {
     expect(res.headers['content-length']).to.equal('6')
   })
 
+  /* eslint-disable */
   it.skip('should allow POST request with blob body without type', function () {
     const url = `${base}inspect`
     const opts = {
@@ -1219,6 +1227,7 @@ describe('node-fetch', () => {
     expect(res.headers.b).to.equal('2')
     expect(res.body).to.equal('a=1')
   })
+  /* eslint-enable */
 
   it('should allow POST request with object body', function () {
     const url = `${base}inspect`
@@ -1298,7 +1307,7 @@ describe('node-fetch', () => {
   // /* for 100% code coverage, checks for duck-typing-only detection
   //  * where both constructor.name and brand tests fail */
   it('should still recognize URLSearchParams when extended from polyfill', function () {
-    class CustomPolyfilledSearchParams extends URLSearchParams_Polyfill {}
+    class CustomPolyfilledSearchParams extends URLSearchParamsPolyfill {}
     const params = new CustomPolyfilledSearchParams()
     params.append('a', '1')
 
@@ -1486,6 +1495,7 @@ describe('node-fetch', () => {
     expect(r1.text()).to.equal('{"name":"value"}')
   })
 
+  /* eslint-disable */
   it.skip('should allow cloning a json response, and then log it as text response', function () {
     const url = `${base}json`
     const res = fetch(url)
@@ -1493,6 +1503,7 @@ describe('node-fetch', () => {
     expect(res.json()).to.deep.equal({ name: 'value' })
     expect(r1.text()).to.equal('{"name":"value"}')
   })
+  /* eslint-enable */
 
   it('should allow cloning a json response, first log as text response, then return json object', function () {
     const url = `${base}json`
@@ -1535,6 +1546,7 @@ describe('node-fetch', () => {
     expect(res.headers.get('set-cookie')).to.be.null
   })
 
+  /* eslint-disable */
   it.skip('should send request with connection keep-alive if agent is provided', function () {
     const url = `${base}inspect`
     const opts = {
@@ -1545,6 +1557,7 @@ describe('node-fetch', () => {
     const res = fetch(url, opts).json()
     expect(res.headers['connection']).to.equal('keep-alive')
   })
+  /* eslint-enable */
 
   it('should support fetch with Request instance', function () {
     const url = `${base}hello`
@@ -1555,6 +1568,7 @@ describe('node-fetch', () => {
     expect(res.status).to.equal(200)
   })
 
+  /* eslint-disable */
   it.skip('should support fetch with Node.js URL object', function () {
     const url = `${base}hello`
     const urlObj = url.parse(url)
@@ -1564,6 +1578,7 @@ describe('node-fetch', () => {
     expect(res.ok).to.be.true
     expect(res.status).to.equal(200)
   })
+  /* eslint-enable */
 
   it('should support fetch with WHATWG URL object', function () {
     const url = `${base}hello`
@@ -1575,6 +1590,7 @@ describe('node-fetch', () => {
     expect(res.status).to.equal(200)
   })
 
+  /* eslint-disable */
   it.skip('should support reading blob as text', function () {
     return new Response('hello')
       .blob()
@@ -1622,6 +1638,7 @@ describe('node-fetch', () => {
       expect(headers['content-length']).to.equal(String(length))
     })
   })
+  /* eslint-enable */
 
   it('should support overwrite Request instance', function () {
     const url = `${base}inspect`
@@ -1641,6 +1658,7 @@ describe('node-fetch', () => {
     expect(body.headers.a).to.equal('2')
   })
 
+  /* eslint-disable */
   it.skip('should support arrayBuffer(), blob(), text(), json() and buffer() method in Body constructor', function () {
     const body = new Body('a=1')
     expect(body).to.have.property('arrayBuffer')
@@ -1649,6 +1667,7 @@ describe('node-fetch', () => {
     expect(body).to.have.property('json')
     expect(body).to.have.property('buffer')
   })
+  /* eslint-enable */
 
   it('should create custom FetchError', function funcName () {
     const systemError = new Error('system')
@@ -1678,6 +1697,7 @@ describe('node-fetch', () => {
   })
 
   // issue #414
+  /* eslint-disable */
   it.skip('should reject if attempt to accumulate body stream throws', function () {
     let body = resumer().queue('a=1').end()
     body = body.pipe(new stream.PassThrough())
@@ -1809,6 +1829,7 @@ describe('node-fetch', () => {
     expect(extractContentType(bodyContent)).to.equal('text/plain;charset=UTF-8')
     expect(extractContentType(null)).to.be.null
   })
+  /* eslint-enable */
 })
 
 describe('Headers', function () {
@@ -2036,7 +2057,7 @@ describe('Response', function () {
   it('should have attributes conforming to Web IDL', function () {
     const res = new Response()
     const enumerableProperties = []
-    for (let prop in res) { enumerableProperties.push(prop) }
+    for (const prop in res) { enumerableProperties.push(prop) }
     const getterOnly = ['body', 'bodyUsed', 'url', 'status', 'ok', 'redirected', 'statusText', 'headers']
     const all = getterOnly.concat(['arrayBuffer', 'blob', 'json', 'text', 'clone'])
 
@@ -2081,6 +2102,7 @@ describe('Response', function () {
     expect(result.toString()).to.equal('a=1')
   })
 
+  /* eslint-disable */
   it.skip('should support blob() method', function () {
     const res = new Response('a=1', {
       method: 'POST',
@@ -2094,9 +2116,10 @@ describe('Response', function () {
       expect(result.type).to.equal('text/plain')
     })
   })
+  /* eslint-enable */
 
   it('should support clone() method', function () {
-    let body = Buffer.from('a=1')
+    const body = Buffer.from('a=1')
     const res = new Response(body, {
       headers: {
         a: '1'
@@ -2117,6 +2140,7 @@ describe('Response', function () {
     expect(result).to.equal('a=1')
   })
 
+  /* eslint-disable */
   it.skip('should support stream as body', function () {
     let body = resumer().queue('a=1').end()
     body = body.pipe(new stream.PassThrough())
@@ -2124,6 +2148,7 @@ describe('Response', function () {
     const result = res.text()
       expect(result).to.equal('a=1')
   })
+  /* eslint-enable */
 
   it('should support string as body', function () {
     const res = new Response('a=1')
@@ -2143,11 +2168,13 @@ describe('Response', function () {
     expect(result).to.equal('a=1')
   })
 
+  /* eslint-disable */
   it.skip('should support blob as body', function () {
     const res = new Response(new Blob(['a=1']))
     const result = res.text()
       expect(result).to.equal('a=1')
   })
+  /* eslint-enable */
 
   it('should support Uint8Array as body', function () {
     const res = new Response(new Uint8Array(stringToArrayBuffer('a=1')))
@@ -2182,7 +2209,7 @@ describe('Request', function () {
   it('should have attributes conforming to Web IDL', function () {
     const req = new Request('https://github.com/')
     const enumerableProperties = []
-    for (let prop in req) { enumerableProperties.push(prop) }
+    for (const prop in req) { enumerableProperties.push(prop) }
     const getterOnly = ['body', 'bodyUsed', 'method', 'url', 'headers', 'redirect', 'signal']
     const all = getterOnly.concat(['arrayBuffer', 'blob', 'json', 'text', 'clone'])
     for (const toCheck of all) {
@@ -2224,6 +2251,7 @@ describe('Request', function () {
     expect(r2.counter).to.equal(0)
   })
 
+  /* eslint-disable */
   it.skip('should override signal on derived Request instances', function () {
     const parentAbortController = new AbortController()
     const derivedAbortController = new AbortController()
@@ -2248,6 +2276,7 @@ describe('Request', function () {
     expect(parentRequest.signal).to.equal(parentAbortController.signal)
     expect(derivedRequest.signal).to.equal(null)
   })
+  /* eslint-enable */
 
   it('should throw error with GET/HEAD requests with body', function () {
     expect(() => new Request('.', { body: '' })).to.throw(TypeError)
@@ -2321,6 +2350,7 @@ describe('Request', function () {
     expect(result.toString()).to.equal('a=1')
   })
 
+  /* eslint-disable */
   it.skip('should support blob() method', function () {
     const url = base
     var req = new Request(url, {
@@ -2334,6 +2364,7 @@ describe('Request', function () {
       expect(result.type).to.equal('')
     })
   })
+  /* eslint-enable */
 
   it('should support arbitrary url', function () {
     const url = 'anything'
@@ -2343,7 +2374,7 @@ describe('Request', function () {
 
   it('should support clone() method', function () {
     const url = base
-    let body = Buffer.from('a=1')
+    const body = Buffer.from('a=1')
     // let body = resumer().queue('a=1').end()
     // body = body.pipe(new stream.PassThrough())
     // const agent = new http.Agent()
@@ -2356,7 +2387,7 @@ describe('Request', function () {
         b: '2'
       },
       follow: 3,
-      compress: false,
+      compress: false
       // agent,
       // signal
     })

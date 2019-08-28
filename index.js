@@ -33,8 +33,9 @@ function fetch (resource, init) {
   }
 
   if (request[1].body) {
-    request[1].body = parseBody(init.body).toString()
-    request[2].bodyIsString = parseBodyType(init.body) === 'String'
+    const bodyType = parseBodyType(init.body)
+    request[1].body = parseBody(init.body, bodyType).toString()
+    request[2].bodyIsString = bodyType === 'String'
   }
 
   // TODO credentials
@@ -200,18 +201,21 @@ function parseBodyType (body) {
     return 'ArrayBuffer'
   } else if (ArrayBuffer.isView(body)) {
     return 'ArrayBufferView'
-  } else {
+  } else if (body instanceof Stream) {
+		return 'Stream'
+	} else {
     return 'String'
   }
 }
 
-function parseBody (body) {
-  switch (parseBodyType(body)) {
+function parseBody (body, type = parseBodyType(body)) {
+  switch (type) {
     case 'Null': return null
     case 'Buffer': return body
     case 'ArrayBuffer': return Buffer.from(body)
     case 'ArrayBufferView': return Buffer.from(body.buffer, body.byteOffset, body.byteLength)
     case 'String': return Buffer.from(String(body))
+    default: throw new TypeError(`sync-fetch does not support bodies of type: ${type}`)
   }
 }
 

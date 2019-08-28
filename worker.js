@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fetch = require('node-fetch')
+const shared = require('./shared')
 const chunks = []
 
 process.stdin.resume()
@@ -11,42 +12,23 @@ process.stdin.on('data', function (chunk) {
 })
 
 process.stdin.on('end', function () {
-  const [resource, init, options] = JSON.parse(chunks.join())
-  if (init.body && !options.bodyIsString) {
-    init.body = Buffer.from(init.body)
-  }
+  const input = JSON.parse(chunks.join())
+  const request = shared.deserializeRequest(fetch, ...input)
 
-  fetch(resource, init)
+  fetch(request)
     .then(response => response.buffer()
       .then(buffer => respond([
         buffer.toString(),
-        serializeResponse(response)
+        shared.serializeResponse(response)
       ]))
       .catch(error => respond([
         '',
-        serializeResponse(response),
-        serializeError(error)
+        shared.serializeResponse(response),
+        shared.serializeError(error)
       ]))
     )
-    .catch(error => respond(serializeError(error)))
+    .catch(error => respond(shared.serializeError(error)))
 })
-
-function serializeResponse (response) {
-  return {
-    url: response.url,
-    headers: response.headers.raw(),
-    status: response.status,
-    statusText: response.statusText,
-    counter: response.redirected ? 1 : 0 // could be more than one, but no way of telling
-  }
-}
-
-function serializeError ({ constructor, message, type, code }) {
-  return [
-    constructor.name,
-    [message, type, { code }]
-  ]
-}
 
 function respond (message) {
   console.log(JSON.stringify(message))

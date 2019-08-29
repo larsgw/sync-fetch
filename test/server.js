@@ -8,14 +8,15 @@ try { convert = require('encoding').convert } catch (e) {}
 
 class TestServer {
   constructor () {
-    this.server = http.createServer(this.router)
+    this.server = http.createServer(this.router.bind(this))
     this.port = 30001
     this.hostname = 'localhost'
+    this.base = `http://${this.hostname}:${this.port}/`
     // node 8 default keepalive timeout is 5000ms
     // make it shorter here as we want to close server quickly at the end of tests
     this.server.keepAliveTimeout = 1000
     this.server.on('error', function (err) {
-      console.log(err.stack)
+      console.error(err.stack)
     })
     this.server.on('connection', function (socket) {
       socket.setTimeout(1500)
@@ -31,7 +32,7 @@ class TestServer {
   }
 
   router (req, res) {
-    const p = (new URL(req.url)).pathname
+    const p = (new URL(req.url, this.base)).pathname
 
     if (p === '/hello') {
       res.statusCode = 200
@@ -387,7 +388,7 @@ class TestServer {
 if (require.main === module) {
   const server = new TestServer()
   server.start(() => {
-    console.log(`Server started listening at ${server.hostname}:${server.port}`)
+    console.log(server.base)
   })
 }
 

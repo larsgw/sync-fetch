@@ -47,5 +47,8 @@
     "string-to-arraybuffer": "^1.0.2",
     "sync-request": "^6.1.0",
     "whatwg-url": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=8"
   }
 }

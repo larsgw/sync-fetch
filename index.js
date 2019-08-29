@@ -1,5 +1,6 @@
 const exec = require('child_process').execFileSync
 const path = require('path')
+const { URL } = require('url')
 const _fetch = require('node-fetch')
 const shared = require('./shared')
 

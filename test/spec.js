@@ -11,7 +11,7 @@ const resumer = require('resumer')
 const FormData = require('form-data')
 const stringToArrayBuffer = require('string-to-arraybuffer')
 const URLSearchParamsPolyfill = require('@ungap/url-search-params')
-const { URL } = require('whatwg-url')
+const { URL, URLSearchParams } = require('url')
 const zlib = require('zlib')
 
 // test subjects
@@ -41,7 +41,7 @@ let base
 before(done => {
   local = spawn(process.execPath, [path.join(__dirname, 'server.js')])
   local.stdout.on('data', chunk => {
-    base = `http://${chunk.toString().split(' ').pop().trim()}/`
+    base = chunk.toString().trim()
     done()
   })
 })

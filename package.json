@@ -8,12 +8,15 @@
     "index.js",
     "worker.js",
     "shared.js",
-    "browser.js"
+    "browser.js",
+    "bundle.js"
   ],
   "scripts": {
     "lint": "standard",
     "test": "mocha --throw-deprecation test/spec.js",
-    "build": "browserify -r .:sync-fetch -o bundle.js"
+    "build": "browserify -r .:sync-fetch -o bundle.js",
+    "preversion": "npm run lint && npm run test",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",

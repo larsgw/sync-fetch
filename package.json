@@ -4,9 +4,16 @@
   "description": "Synchronous version of the Fetch API",
   "main": "index.js",
   "browser": "browser.js",
+  "files": [
+    "index.js",
+    "worker.js",
+    "shared.js",
+    "browser.js"
+  ],
   "scripts": {
     "lint": "standard",
-    "test": "mocha --throw-deprecation test/spec.js"
+    "test": "mocha --throw-deprecation test/spec.js",
+    "build": "browserify -r .:sync-fetch -o bundle.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +35,7 @@
   },
   "devDependencies": {
     "@ungap/url-search-params": "^0.1.2",
+    "browserify": "^16.5.0",
     "chai": "^4.2.0",
     "chai-iterator": "^3.0.2",
     "chai-string": "^1.5.0",

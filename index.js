@@ -39,6 +39,8 @@ function fetch (resource, init) {
 
 function sendMessage (message) {
   return exec(process.execPath, [path.join(__dirname, 'worker.js')], {
+    windowsHide: true,
+    maxBuffer: Infinity,
     input: JSON.stringify(message),
     shell: false
   })

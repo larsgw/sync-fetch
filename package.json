@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/larsgw/sync-fetch#readme",
   "dependencies": {
+    "buffer": "^5.4.2",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {

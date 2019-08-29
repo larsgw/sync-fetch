@@ -59,11 +59,6 @@ function parseArgs (resource, init) {
   return request
 }
 
-function patchBody (body, buffer) {
-  body[_body] = buffer
-  Object.setPrototypeOf(body, prototype)
-}
-
 const INTERNALS = Symbol('SyncFetch Internals')
 
 class Request extends self.Request {
@@ -180,7 +175,6 @@ function createStream (body) {
     }
   })
 }
-
 
 Body.mixin(Request.prototype)
 Body.mixin(Response.prototype)

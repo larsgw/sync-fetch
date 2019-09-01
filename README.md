@@ -1,6 +1,12 @@
 # sync-fetch
 Synchronous wrapper around the Fetch API. Uses [`node-fetch`](https://github.com/bitinn/node-fetch) under the hood, and for some input-parsing code and test cases too.
 
+[![npm](https://img.shields.io/npm/v/sync-fetch?style=flat-square)](https://npmjs.com/package/sync-fetch)
+
+## Install
+
+    npm install sync-fetch
+
 ## Use
 
 ```js

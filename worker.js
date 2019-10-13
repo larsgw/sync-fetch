@@ -32,5 +32,4 @@ process.stdin.on('end', function () {
 
 function respond (message) {
   console.log(JSON.stringify(message))
-  process.exit(0)
 }

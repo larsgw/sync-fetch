@@ -43,7 +43,7 @@ function sendMessage (message) {
     maxBuffer: Infinity,
     input: JSON.stringify(message),
     shell: false
-  })
+  }).toString()
 }
 
 function extractContentType (input) {

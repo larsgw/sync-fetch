@@ -21,7 +21,7 @@ function fetch (resource, init) {
 
   if (request[1].body) {
     const contentType = extractContentType(request)
-    if (contentType) { request[1].headers.append('content-type', contentType) }
+    if (contentType && !request[1].headers.get('content-type')) { request[1].headers.append('content-type', contentType) }
     request[1].body = shared.parseBody(init.body).toString()
   }
 

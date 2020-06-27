@@ -54,7 +54,7 @@ function extractContentType (input) {
 const _body = Symbol('bodyBuffer')
 const _bodyError = Symbol('bodyError')
 
-class Request extends _fetch.Request {
+class SyncRequest extends _fetch.Request {
   constructor (resource, init = {}) {
     const buffer = shared.parseBody(init.body)
 
@@ -64,11 +64,11 @@ class Request extends _fetch.Request {
 
   clone () {
     checkBody(this)
-    return new Request(...shared.serializeRequest(this))
+    return new SyncRequest(...shared.serializeRequest(this))
   }
 }
 
-class Response extends _fetch.Response {
+class SyncResponse extends _fetch.Response {
   constructor (body, init, options = {}) {
     const {
       buffer = shared.parseBody(body),
@@ -83,7 +83,7 @@ class Response extends _fetch.Response {
   clone () {
     checkBody(this)
     const buffer = Buffer.from(this[_body])
-    return new Response(
+    return new SyncResponse(
       shared.createStream(buffer),
       shared.serializeResponse(this),
       {
@@ -97,6 +97,7 @@ class Response extends _fetch.Response {
 class Body {
   static mixin (proto) {
     for (const name of Object.getOwnPropertyNames(Body.prototype)) {
+      if (name === 'constructor') { continue }
       const desc = Object.getOwnPropertyDescriptor(Body.prototype, name)
       Object.defineProperty(proto, name, {
         ...desc,
@@ -167,13 +168,13 @@ function defineBodyError (body, error) {
   })
 }
 
-Body.mixin(Request.prototype)
-Body.mixin(Response.prototype)
-Object.defineProperties(Request.prototype, { clone: { enumerable: true } })
-Object.defineProperties(Response.prototype, { clone: { enumerable: true } })
+Body.mixin(SyncRequest.prototype)
+Body.mixin(SyncResponse.prototype)
+Object.defineProperties(SyncRequest.prototype, { clone: { enumerable: true } })
+Object.defineProperties(SyncResponse.prototype, { clone: { enumerable: true } })
 
 fetch.Headers = _fetch.Headers
 fetch.FetchError = _fetch.FetchError
-fetch.Request = Request
-fetch.Response = Response
+fetch.Request = SyncRequest
+fetch.Response = SyncResponse
 module.exports = fetch

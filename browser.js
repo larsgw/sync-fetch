@@ -61,7 +61,7 @@ function parseArgs (resource, init) {
 
 const INTERNALS = Symbol('SyncFetch Internals')
 
-class Request extends self.Request {
+class SyncRequest extends Request {
   constructor (resource, init = {}, body = init.body) {
     super(resource, init)
     this[INTERNALS] = {
@@ -71,11 +71,11 @@ class Request extends self.Request {
 
   clone () {
     checkBody(this)
-    return new Request(this.url, this)
+    return new SyncRequest(this.url, this)
   }
 }
 
-class Response extends self.Response {
+class SyncResponse extends Response {
   constructor (body, init = {}) {
     body = body ? Buffer.from(body) : null
     super(createStream(body), init)
@@ -96,7 +96,7 @@ class Response extends self.Response {
 
   clone () {
     checkBody(this)
-    return new Response(this[INTERNALS].body, {
+    return new SyncResponse(this[INTERNALS].body, {
       url: this.url,
       headers: this.headers,
       status: this.status,
@@ -115,6 +115,7 @@ class Body {
 
   static mixin (prototype) {
     for (const name of Object.getOwnPropertyNames(Body.prototype)) {
+      if (name === 'constructor') { continue }
       const desc = Object.getOwnPropertyDescriptor(Body.prototype, name)
       Object.defineProperty(prototype, name, { ...desc, enumerable: true })
     }
@@ -176,10 +177,10 @@ function createStream (body) {
   })
 }
 
-Body.mixin(Request.prototype)
-Body.mixin(Response.prototype)
+Body.mixin(SyncRequest.prototype)
+Body.mixin(SyncResponse.prototype)
 
 syncFetch.Headers = self.Headers
-syncFetch.Request = Request
-syncFetch.Response = Response
+syncFetch.Request = SyncRequest
+syncFetch.Response = SyncResponse
 module.exports = syncFetch

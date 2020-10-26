@@ -12,7 +12,7 @@ process.stdin.on('data', function (chunk) {
 })
 
 process.stdin.on('end', function () {
-  const input = JSON.parse(chunks.join())
+  const input = JSON.parse(chunks.join(''))
   const request = shared.deserializeRequest(fetch, ...input)
 
   fetch(request)

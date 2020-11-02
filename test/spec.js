@@ -184,7 +184,7 @@ describe('node-fetch', () => {
       }
     }
     const res = fetch(url, opts).json()
-    expect(res.headers['host']).to.equal('example.com')
+    expect(res.headers.host).to.equal('example.com')
   })
 
   it('should accept custom HoSt header', function () {
@@ -195,7 +195,7 @@ describe('node-fetch', () => {
       }
     }
     const res = fetch(url, opts).json()
-    expect(res.headers['host']).to.equal('example.com')
+    expect(res.headers.host).to.equal('example.com')
   })
 
   it('should follow redirect code 301', function () {
@@ -1973,23 +1973,23 @@ describe('Headers', function () {
 
     const h1Raw = h1.raw()
 
-    expect(h1Raw['a']).to.include('string')
-    expect(h1Raw['b']).to.include('1,2')
-    expect(h1Raw['c']).to.include('')
-    expect(h1Raw['d']).to.include('')
-    expect(h1Raw['e']).to.include('1')
-    expect(h1Raw['f']).to.include('1,2')
-    expect(h1Raw['g']).to.include('[object Object]')
-    expect(h1Raw['h']).to.include('undefined')
-    expect(h1Raw['i']).to.include('null')
-    expect(h1Raw['j']).to.include('NaN')
-    expect(h1Raw['k']).to.include('true')
-    expect(h1Raw['l']).to.include('false')
-    expect(h1Raw['m']).to.include('test')
-    expect(h1Raw['n']).to.include('1,2')
-    expect(h1Raw['n']).to.include('3,4')
+    expect(h1Raw.a).to.include('string')
+    expect(h1Raw.b).to.include('1,2')
+    expect(h1Raw.c).to.include('')
+    expect(h1Raw.d).to.include('')
+    expect(h1Raw.e).to.include('1')
+    expect(h1Raw.f).to.include('1,2')
+    expect(h1Raw.g).to.include('[object Object]')
+    expect(h1Raw.h).to.include('undefined')
+    expect(h1Raw.i).to.include('null')
+    expect(h1Raw.j).to.include('NaN')
+    expect(h1Raw.k).to.include('true')
+    expect(h1Raw.l).to.include('false')
+    expect(h1Raw.m).to.include('test')
+    expect(h1Raw.n).to.include('1,2')
+    expect(h1Raw.n).to.include('3,4')
 
-    expect(h1Raw['z']).to.be.undefined
+    expect(h1Raw.z).to.be.undefined
   })
 
   it('should wrap headers', function () {
@@ -2006,16 +2006,16 @@ describe('Headers', function () {
     h3.append('a', '2')
     const h3Raw = h3.raw()
 
-    expect(h1Raw['a']).to.include('1')
-    expect(h1Raw['a']).to.not.include('2')
+    expect(h1Raw.a).to.include('1')
+    expect(h1Raw.a).to.not.include('2')
 
-    expect(h2Raw['a']).to.include('1')
-    expect(h2Raw['a']).to.not.include('2')
-    expect(h2Raw['b']).to.include('1')
+    expect(h2Raw.a).to.include('1')
+    expect(h2Raw.a).to.not.include('2')
+    expect(h2Raw.b).to.include('1')
 
-    expect(h3Raw['a']).to.include('1')
-    expect(h3Raw['a']).to.include('2')
-    expect(h3Raw['b']).to.include('1')
+    expect(h3Raw.a).to.include('1')
+    expect(h3Raw.a).to.include('2')
+    expect(h3Raw.b).to.include('1')
   })
 
   it('should accept headers as an iterable of tuples', function () {
@@ -2306,7 +2306,7 @@ describe('Request', function () {
 
   it('should support arrayBuffer() method', function () {
     const url = base
-    var req = new Request(url, {
+    const req = new Request(url, {
       method: 'POST',
       body: 'a=1'
     })

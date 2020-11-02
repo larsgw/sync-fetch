@@ -132,7 +132,7 @@ class Body {
   }
 
   textConverted () {
-    throw new fetch.FetchError(`textConverted not implemented`)
+    throw new fetch.FetchError('textConverted not implemented')
   }
 }
 

@@ -43,13 +43,13 @@
     "chai-iterator": "^3.0.2",
     "chai-string": "^1.5.0",
     "form-data": "^3.0.0",
-    "mocha": "^6.2.0",
+    "mocha": "^8.2.0",
     "parted": "^0.1.1",
     "resumer": "0.0.0",
-    "standard": "^13.1.0",
+    "standard": "^16.0.1",
     "string-to-arraybuffer": "^1.0.2",
     "sync-request": "^6.1.0",
-    "whatwg-url": "^7.1.0"
+    "whatwg-url": "^8.4.0"
   },
   "engines": {
     "node": ">=8"

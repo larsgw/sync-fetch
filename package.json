@@ -33,23 +33,23 @@
   },
   "homepage": "https://github.com/larsgw/sync-fetch#readme",
   "dependencies": {
-    "buffer": "^5.4.2",
-    "node-fetch": "^2.6.0"
+    "buffer": "^5.7.0",
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@ungap/url-search-params": "^0.1.2",
-    "browserify": "^16.5.0",
+    "@ungap/url-search-params": "^0.2.2",
+    "browserify": "^17.0.0",
     "chai": "^4.2.0",
     "chai-iterator": "^3.0.2",
     "chai-string": "^1.5.0",
-    "form-data": "^2.5.0",
+    "form-data": "^3.0.0",
     "mocha": "^6.2.0",
     "parted": "^0.1.1",
     "resumer": "0.0.0",
     "standard": "^13.1.0",
     "string-to-arraybuffer": "^1.0.2",
     "sync-request": "^6.1.0",
-    "whatwg-url": "^7.0.0"
+    "whatwg-url": "^7.1.0"
   },
   "engines": {
     "node": ">=8"

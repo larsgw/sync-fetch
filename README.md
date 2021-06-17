@@ -17,6 +17,7 @@ const metadata = fetch('https://doi.org/10.7717/peerj-cs.214', {
     Accept: 'application/vnd.citationstyles.csl+json'
   }
 }).json()
+// json(), arrayBuffer(), text() and buffer() supported
 ```
 
 ## Limitations

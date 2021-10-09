@@ -487,7 +487,7 @@ describe('node-fetch', () => {
   it('should handle DNS-error response', function () {
     const url = 'http://domain.invalid'
     expect(() => fetch(url)).to.throw(FetchError)
-      .that.has.property('code', 'ENOTFOUND')
+      .that.has.property('code').that.matches(/ENOTFOUND|EAI_AGAIN/)
   })
 
   it('should reject invalid json response', function () {

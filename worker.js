@@ -18,7 +18,7 @@ process.stdin.on('end', function () {
   fetch(request)
     .then(response => response.buffer()
       .then(buffer => respond([
-        buffer.toString(),
+        buffer.toString('base64'),
         shared.serializeResponse(response)
       ]))
       .catch(error => respond([

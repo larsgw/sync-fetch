@@ -60,7 +60,7 @@ function serializeResponse (response) {
 }
 
 function deserializeResponse (fetch, body, init, bodyError) {
-  const buffer = parseBody(body)
+  const buffer = Buffer.from(body, 'base64')
 
   return new fetch.Response(
     body ? createStream(buffer) : createStream(null),

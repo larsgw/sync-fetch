@@ -1,4 +1,4 @@
-const exec = require('child_process').execFileSync
+const { Worker, MessageChannel, receiveMessageOnPort } = require('worker_threads')
 const path = require('path')
 const { URL } = require('url')
 const _fetch = require('node-fetch')
@@ -38,12 +38,16 @@ function fetch (resource, init) {
 }
 
 function sendMessage (message) {
-  return exec(process.execPath, [path.join(__dirname, 'worker.js')], {
-    windowsHide: true,
-    maxBuffer: Infinity,
-    input: JSON.stringify(message),
-    shell: false
-  }).toString()
+  const worker = new Worker(path.join(__dirname, 'worker.js'))
+  const { port1, port2 } = new MessageChannel()
+  worker.postMessage(port2, [port2])
+  worker.postMessage(JSON.stringify(message))
+
+  let response
+  while (!(response = receiveMessageOnPort(port1)));
+  worker.terminate()
+
+  return response.message
 }
 
 function extractContentType (input) {

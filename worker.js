@@ -1,18 +1,20 @@
 #!/usr/bin/env node
 
+const { MessagePort, parentPort } = require('worker_threads')
 const fetch = require('node-fetch')
 const shared = require('./shared')
-const chunks = []
 
-process.stdin.resume()
-process.stdin.setEncoding('utf8')
+let port = null
+let pendingResponse = null
 
-process.stdin.on('data', function (chunk) {
-  chunks.push(chunk)
-})
+parentPort.on('message', function (message) {
+  if (message instanceof MessagePort) {
+    port = message
+    if (pendingResponse) { respond(pendingResponse) }
+    return
+  }
 
-process.stdin.on('end', function () {
-  const input = JSON.parse(chunks.join(''))
+  const input = JSON.parse(message)
   const request = shared.deserializeRequest(fetch, ...input)
 
   fetch(request)
@@ -31,5 +33,9 @@ process.stdin.on('end', function () {
 })
 
 function respond (message) {
-  console.log(JSON.stringify(message))
+  if (port instanceof MessagePort) {
+    port.postMessage(JSON.stringify(message))
+  } else {
+    pendingResponse = message
+  }
 }

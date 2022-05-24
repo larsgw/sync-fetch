@@ -377,7 +377,7 @@ class TestServer {
           method: req.method,
           url: req.url,
           headers: req.headers,
-          body: body
+          body
         }))
       })
       req.pipe(parser)

@@ -1,3 +1,12 @@
+## [0.4.1](https://github.com/larsgw/sync-fetch/compare/v0.4.0...v0.4.1) (2022-05-26)
+
+
+### Bug Fixes
+
+* **browser:** re-add non-spec timeout option ([168a46c](https://github.com/larsgw/sync-fetch/commit/168a46c441390a7a996fd27d39724f79488db220))
+
+
+
 # [0.4.0](https://github.com/larsgw/sync-fetch/compare/v0.3.1...v0.4.0) (2022-05-26)
 
 

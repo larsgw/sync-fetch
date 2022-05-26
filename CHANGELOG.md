@@ -1,3 +1,23 @@
+# [0.4.0](https://github.com/larsgw/sync-fetch/compare/v0.3.1...v0.4.0) (2022-05-26)
+
+
+### Bug Fixes
+
+* **browser:** improve browser compatibility ([c65b3aa](https://github.com/larsgw/sync-fetch/commit/c65b3aa))
+
+
+* chore!: raise minimal Node.js version to 14 ([096e7a3](https://github.com/larsgw/sync-fetch/commit/096e7a3))
+
+
+### BREAKING CHANGES
+
+* Use Node.js 14 or higher. sync-fetch 0.3.x will keep
+getting critical security fixes if possible, but keep in mind that
+Node.js 12 itself is EOL and will itself not receive any security
+updates.
+
+
+
 ## [0.3.1](https://github.com/larsgw/sync-fetch/compare/v0.3.0...v0.3.1) (2021-10-09)
 
 

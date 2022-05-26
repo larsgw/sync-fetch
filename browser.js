@@ -7,6 +7,7 @@ function syncFetch (...args) {
 
   const xhr = new XMLHttpRequest()
   xhr.withCredentials = request.credentials === 'include'
+  xhr.timeout = request[INTERNALS].timeout
 
   // Request
   xhr.open(request.method, request.url, false)
@@ -102,7 +103,10 @@ class SyncRequest {
       method: init.method || 'GET',
       headers: new syncFetch.Headers(init.headers),
       body: init.body ? Buffer.from(init.body) : null,
-      credentials: init.credentials || 'omit'
+      credentials: init.credentials || 'omit',
+
+      // Non-spec
+      timeout: init.timeout || 0
     }
 
     if (typeof resource === 'string') {

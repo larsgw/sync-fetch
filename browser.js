@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-const { Buffer } = require('buffer/')
+const textEncoder = new TextEncoder();
 
 function syncFetch (...args) {
   const request = new syncFetch.Request(...args)
@@ -102,7 +102,7 @@ class SyncRequest {
     this[INTERNALS] = {
       method: init.method || 'GET',
       headers: new syncFetch.Headers(init.headers),
-      body: init.body ? Buffer.from(init.body) : null,
+      body: init.body ? textEncoder.encode(init.body) : null,
       credentials: init.credentials || 'omit',
 
       // Non-spec
@@ -187,7 +187,7 @@ class SyncRequest {
 class SyncResponse {
   constructor (body, init = {}) {
     this[INTERNALS] = {
-      body: body ? Buffer.from(body) : null,
+      body: body ? textEncoder.encode(body) : null,
       bodyUsed: false,
 
       headers: new syncFetch.Headers(init.headers),
@@ -244,7 +244,7 @@ class SyncResponse {
 class Body {
   constructor (body) {
     this[INTERNALS] = {
-      body: Buffer.from(body),
+      body: textEncoder.encode(body),
       bodyUsed: false
     }
   }

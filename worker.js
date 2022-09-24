@@ -31,5 +31,5 @@ process.stdin.on('end', function () {
 })
 
 function respond (message) {
-  console.log(JSON.stringify(message))
+  process.stdout.write(JSON.stringify(message))
 }

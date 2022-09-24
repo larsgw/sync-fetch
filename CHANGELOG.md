@@ -1,3 +1,7 @@
+## [0.4.2](https://github.com/larsgw/sync-fetch/compare/v0.4.1...v0.4.2) (2022-09-24)
+
+
+
 ## [0.4.1](https://github.com/larsgw/sync-fetch/compare/v0.4.0...v0.4.1) (2022-05-26)
 
 

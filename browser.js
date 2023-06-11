@@ -1,6 +1,7 @@
 /* eslint-env browser */
 
 const textEncoder = new TextEncoder()
+const textDecoder = new TextDecoder()
 
 function syncFetch (...args) {
   const request = new syncFetch.Request(...args)
@@ -286,12 +287,12 @@ class Body {
   }
 
   text () {
-    return consumeBody(this).toString()
+    return textDecoder.decode(consumeBody(this))
   }
 
   json () {
     try {
-      return JSON.parse(consumeBody(this).toString())
+      return JSON.parse(this.text())
     } catch (err) {
       throw new TypeError(`invalid json response body at ${this.url} reason: ${err.message}`, 'invalid-json')
     }

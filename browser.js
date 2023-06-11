@@ -28,7 +28,7 @@ function syncFetch (...args) {
     xhr.setRequestHeader(...header)
   }
 
-  xhr.send(request.body || null)
+  xhr.send(request[INTERNALS].body || null)
 
   // Response
   let headers = xhr.getAllResponseHeaders()

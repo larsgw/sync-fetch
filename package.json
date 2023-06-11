@@ -4,6 +4,8 @@
   "description": "Synchronous version of the Fetch API",
   "main": "index.js",
   "browser": "browser.js",
+  "jsdelivr": "bundle.js",
+  "unpkg": "bundle.js",
   "files": [
     "index.js",
     "worker.js",

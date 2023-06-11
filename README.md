@@ -10,7 +10,7 @@ Synchronous wrapper around the Fetch API. Uses [`node-fetch`](https://github.com
 In the browser, a browserify bundle can be loaded from CDNs like unpkg.com.
 
     <script src="https://unpkg.com/sync-fetch"></script>
-    <script src="https://unpkg.com/sync-fetch@VERSION/browser.js"></script>
+    <script src="https://unpkg.com/sync-fetch@VERSION"></script>
 
 ## Use
 
@@ -41,4 +41,5 @@ const metadata = fetch('https://doi.org/10.7717/peerj-cs.214', {
     - `headers`
     - `credentials` (but not `omit`)
     - (Non-spec) `timeout`
+  - The non-standard `buffer()` method is not supported
   - CORS limitations apply, of course (note they may be stricter for synchronous requests)

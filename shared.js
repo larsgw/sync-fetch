@@ -44,7 +44,7 @@ function serializeRequest (request) {
 function deserializeRequest (fetch, resource, init) {
   return new fetch.Request(resource, {
     ...init,
-    body: init.body ? Buffer.from(init.body) : undefined,
+    body: init.body ? Buffer.from(init.body, 'base64') : undefined,
     headers: deserializeHeaders(fetch, init.headers)
   })
 }

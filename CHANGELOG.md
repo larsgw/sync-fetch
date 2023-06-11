@@ -1,3 +1,12 @@
+## [0.4.4](https://github.com/larsgw/sync-fetch/compare/v0.4.3...v0.4.4) (2023-06-11)
+
+
+### Features
+
+* **browser:** fetch binary outside Worker scopes ([02611fc](https://github.com/larsgw/sync-fetch/commit/02611fc70ea9cae4d61f0ccec9e4d0dfb2bce11b)), closes [#36](https://github.com/larsgw/sync-fetch/issues/36)
+
+
+
 ## [0.4.3](https://github.com/larsgw/sync-fetch/compare/v0.4.2...v0.4.3) (2023-06-11)
 
 

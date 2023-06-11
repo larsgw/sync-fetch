@@ -20,7 +20,7 @@ function syncFetch (...args) {
   } catch (e) {
     // Not in Worker scope; instead, attempt this alternative method
     // https://web.archive.org/web/20071103070418/http://mgran.blogspot.com/2006/08/downloading-binary-streams-with.html
-    xhr.overrideMimeType('text/plain; charset=x-binary')
+    xhr.overrideMimeType('text/plain; charset=x-user-defined')
     useBinaryEncoding = true
   }
 

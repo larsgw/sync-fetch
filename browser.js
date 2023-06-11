@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-const { Buffer } = require('buffer/')
+const textEncoder = new TextEncoder()
 
 function syncFetch (...args) {
   const request = new syncFetch.Request(...args)
@@ -36,7 +36,7 @@ function syncFetch (...args) {
 
   let body = xhr.response
   if (useBinaryEncoding) {
-    const buffer = Buffer.alloc(body.length)
+    const buffer = new Uint8Array(body.length)
     for (let i = 0; i < body.length; i++) {
       buffer[i] = body.charCodeAt(i) & 0xff
     }
@@ -116,7 +116,7 @@ class SyncRequest {
     this[INTERNALS] = {
       method: init.method || 'GET',
       headers: new syncFetch.Headers(init.headers),
-      body: init.body ? Buffer.from(init.body) : null,
+      body: parseBody(init.body),
       credentials: init.credentials || 'omit',
 
       // Non-spec
@@ -201,7 +201,7 @@ class SyncRequest {
 class SyncResponse {
   constructor (body, init = {}) {
     this[INTERNALS] = {
-      body: body ? Buffer.from(body) : null,
+      body: parseBody(body),
       bodyUsed: false,
 
       headers: new syncFetch.Headers(init.headers),
@@ -258,7 +258,7 @@ class SyncResponse {
 class Body {
   constructor (body) {
     this[INTERNALS] = {
-      body: Buffer.from(body),
+      body: parseBody(body),
       bodyUsed: false
     }
   }
@@ -311,7 +311,17 @@ function checkBody (body) {
 function consumeBody (body) {
   checkBody(body)
   body[INTERNALS].bodyUsed = true
-  return body[INTERNALS].body || Buffer.alloc(0)
+  return body[INTERNALS].body || new Uint8Array()
+}
+
+function parseBody (body) {
+  if (typeof body === 'string') {
+    return textEncoder.encode(body)
+  } else if (body) {
+    return body
+  } else {
+    return null
+  }
 }
 
 Body.mixin(SyncRequest.prototype)

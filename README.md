@@ -7,6 +7,11 @@ Synchronous wrapper around the Fetch API. Uses [`node-fetch`](https://github.com
 
     npm install sync-fetch
 
+In the browser, a browserify bundle can be loaded from CDNs like unpkg.com.
+
+    <script src="https://unpkg.com/sync-fetch"></script>
+    <script src="https://unpkg.com/sync-fetch@VERSION/browser.js"></script>
+
 ## Use
 
 ```js

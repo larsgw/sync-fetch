@@ -1,3 +1,12 @@
+## [0.4.5](https://github.com/larsgw/sync-fetch/compare/v0.4.4...v0.4.5) (2023-06-11)
+
+
+### Bug Fixes
+
+* **browser:** fix binary responses ([479a418](https://github.com/larsgw/sync-fetch/commit/479a41848d2e44391c247a1118647218097ce891))
+
+
+
 ## [0.4.4](https://github.com/larsgw/sync-fetch/compare/v0.4.3...v0.4.4) (2023-06-11)
 
 

@@ -19,8 +19,6 @@
 
 * Support for IE and Edge <18 dropped.
 
-Co-authored-by: Arda TANRIKULU <ardatanrikulu@gmail.com>
-
 
 
 ## [0.4.5](https://github.com/larsgw/sync-fetch/compare/v0.4.4...v0.4.5) (2023-06-11)

@@ -297,10 +297,6 @@ class Body {
       throw new TypeError(`invalid json response body at ${this.url} reason: ${err.message}`, 'invalid-json')
     }
   }
-
-  buffer () {
-    return consumeBody(this).clone()
-  }
 }
 
 function checkBody (body) {

@@ -1,3 +1,14 @@
+## [0.5.1](https://github.com/larsgw/sync-fetch/compare/v0.5.0...v0.5.1) (2023-06-11)
+
+
+### Bug Fixes
+
+* **browser:** correctly send request body ([77a5b8f](https://github.com/larsgw/sync-fetch/commit/77a5b8f4f1091ca5a05c42801f63a7632f983ee8))
+* **browser:** fix text responses ([ce210ce](https://github.com/larsgw/sync-fetch/commit/ce210ced0e8108c30e5ab0b5c992e18fbd8710c7))
+* **browser:** remove SyncResponse#buffer() ([5d17fba](https://github.com/larsgw/sync-fetch/commit/5d17fba8c78f71dcd8268cdd360bf802dd7e9bc8))
+
+
+
 # [0.5.0](https://github.com/larsgw/sync-fetch/compare/v0.4.5...v0.5.0) (2023-06-11)
 
 

@@ -12,11 +12,16 @@ function syncFetch (...args) {
   // Request
   xhr.open(request.method, request.url, false)
 
+  let useBinaryEncoding = false
   try {
+    // Only allowed in Worker scope, not available in older browsers
+    // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType#Synchronous_XHR_restrictions
     xhr.responseType = 'arraybuffer'
   } catch (e) {
-    // not in Worker scope
-    // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType#Synchronous_XHR_restrictions
+    // Not in Worker scope; instead, attempt this alternative method
+    // https://web.archive.org/web/20071103070418/http://mgran.blogspot.com/2006/08/downloading-binary-streams-with.html
+    xhr.overrideMimeType('text/plain; charset=x-binary')
+    useBinaryEncoding = true
   }
 
   for (const header of request.headers) {
@@ -29,7 +34,16 @@ function syncFetch (...args) {
   let headers = xhr.getAllResponseHeaders()
   headers = headers && headers.split('\r\n').filter(Boolean).map(header => header.split(': ', 2))
 
-  const response = new syncFetch.Response(xhr.response, {
+  let body = xhr.response
+  if (useBinaryEncoding) {
+    const buffer = Buffer.alloc(body.length)
+    for (let i = 0; i < body.length; i++) {
+      buffer[i] = body.charCodeAt(i) & 0xff
+    }
+    body = buffer
+  }
+
+  const response = new syncFetch.Response(body, {
     headers,
     status: xhr.status,
     statusText: xhr.statusText

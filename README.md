@@ -36,5 +36,4 @@ const metadata = fetch('https://doi.org/10.7717/peerj-cs.214', {
     - `headers`
     - `credentials` (but not `omit`)
     - (Non-spec) `timeout`
-  - Does not support [binary responses in the main thread](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType#Synchronous_XHR_restrictions)
   - CORS limitations apply, of course (note they may be stricter for synchronous requests)

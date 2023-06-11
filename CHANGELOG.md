@@ -1,3 +1,12 @@
+## [0.4.3](https://github.com/larsgw/sync-fetch/compare/v0.4.2...v0.4.3) (2023-06-11)
+
+
+### Bug Fixes
+
+* transfer binary POST bodies correctly ([cf5f592](https://github.com/larsgw/sync-fetch/commit/cf5f5921b0e5a63fc9e69d643f814bbb7ed84160)), closes [#37](https://github.com/larsgw/sync-fetch/issues/37)
+
+
+
 ## [0.4.2](https://github.com/larsgw/sync-fetch/compare/v0.4.1...v0.4.2) (2022-09-24)
 
 

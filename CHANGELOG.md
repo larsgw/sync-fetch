@@ -1,3 +1,17 @@
+# [0.5.0](https://github.com/larsgw/sync-fetch/compare/v0.4.5...v0.5.0) (2023-06-11)
+
+
+* refactor!: replace Buffer with TextEncoder and Uint8Array ([1615baa](https://github.com/larsgw/sync-fetch/commit/1615baa1a32db9216a17618dcf1b7043c1d34496)), closes [#27](https://github.com/larsgw/sync-fetch/issues/27)
+
+
+### BREAKING CHANGES
+
+* Support for IE and Edge <18 dropped.
+
+Co-authored-by: Arda TANRIKULU <ardatanrikulu@gmail.com>
+
+
+
 ## [0.4.5](https://github.com/larsgw/sync-fetch/compare/v0.4.4...v0.4.5) (2023-06-11)
 
 

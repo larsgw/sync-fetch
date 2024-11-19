@@ -1,3 +1,17 @@
+# [0.6.0-0](https://github.com/larsgw/sync-fetch/compare/v0.5.2...v0.6.0-0) (2024-11-19)
+
+
+### Code Refactoring
+
+* upgrade to node-fetch 3 ([071930c](https://github.com/larsgw/sync-fetch/commit/071930cf6e37f9a72afc912fcb17c7f93597b018))
+
+
+### BREAKING CHANGES
+
+* drop support for Node 14, 16; upgrade to node-fetch 3
+
+
+
 ## [0.5.2](https://github.com/larsgw/sync-fetch/compare/v0.5.1...v0.5.2) (2023-06-11)
 
 * update package definition ([7325c8a](https://github.com/larsgw/sync-fetch/commit/7325c8aed4295cdea43213d175705cdb1e91ee05))

@@ -9,7 +9,7 @@
   "files": [
     "index.js",
     "worker.js",
-    "shared.js",
+    "src/*.js",
     "browser.js",
     "bundle.js"
   ],
@@ -37,7 +37,8 @@
   },
   "homepage": "https://github.com/larsgw/sync-fetch#readme",
   "dependencies": {
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^3.3.2",
+    "timeout-signal": "^2.0.0"
   },
   "devDependencies": {
     "@ungap/url-search-params": "^0.2.2",
@@ -54,6 +55,6 @@
     "string-to-arraybuffer": "^1.0.2"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   }
 }

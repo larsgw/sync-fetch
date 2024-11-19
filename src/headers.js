@@ -20,10 +20,6 @@ function deleteHeader (headers, name) {
 }
 
 class SyncHeaders extends Headers {
-  constructor (headers) {
-    super(headers)
-  }
-
   append (name, value) {
     super.append(name, value)
     appendHeader(this, name, value)
@@ -34,7 +30,7 @@ class SyncHeaders extends Headers {
     deleteHeader(this, name)
   }
 
-  set  (name, value) {
+  set (name, value) {
     super.set(name, value)
     deleteHeader(this, name)
     appendHeader(this, name, value)

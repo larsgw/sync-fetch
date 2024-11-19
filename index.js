@@ -1,6 +1,5 @@
 const exec = require('child_process').execFileSync
 const path = require('path')
-const { URL } = require('url')
 
 const { SyncHeaders } = require('./src/headers.js')
 const { FetchError, deserializeError } = require('./src/error.js')

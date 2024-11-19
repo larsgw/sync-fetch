@@ -54,7 +54,7 @@ class Body {
 
   get bodyUsed () {
     if (this[_state].bodyStream && this[_state].bodyStream.state === 'closed') {
-      return this[_state].bodyUsed = true
+      this[_state].bodyUsed = true
     }
 
     return this[_state].bodyUsed

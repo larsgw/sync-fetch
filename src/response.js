@@ -1,7 +1,7 @@
 const util = require('util')
 const { Body, checkBody, parseBody, createStream, _state } = require('./body.js')
 const { deserializeError } = require('./error.js')
-const { SyncHeaders } = require('./headers.js')
+const { SyncHeaders, initializeHeaders } = require('./headers.js')
 
 class SyncResponse {
   constructor (body, options = {}) {
@@ -152,7 +152,7 @@ function initializeResponse (init, state) {
 function deserializeResponse (body, init, bodyError) {
   const options = {
     ...init,
-    headers: new SyncHeaders(init.headers)
+    headers: initializeHeaders(init.headers)
   }
   const state = {
     ...init,

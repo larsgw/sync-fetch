@@ -66,7 +66,7 @@ function timeoutSignal (timeout) {
 
 function serializeResponse (body, response, bodyError) {
   const init = {
-    headers: Array.from(response.headers),
+    headers: response.headers.raw(),
     status: response.status,
     statusText: response.statusText,
     redirected: response.redirected,

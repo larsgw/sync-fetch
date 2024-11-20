@@ -21,11 +21,9 @@ class SyncHeaders {
   constructor (headers) {
     this[_state] = {}
 
-    if (headers == null) {
-      return
-    } else if (headers instanceof SyncHeaders) {
+    if (headers instanceof SyncHeaders) {
       this[_state] = headers.raw()
-    } else if (headers[Symbol.iterator] != null) {
+    } else if (headers != null && headers[Symbol.iterator] != null) {
       if (typeof headers[Symbol.iterator] !== 'function') {
         throw new TypeError('Header pairs must be iterable')
       }
@@ -53,7 +51,7 @@ class SyncHeaders {
       for (const name of Object.keys(headers)) {
         this.set(name, headers[name])
       }
-    } else {
+    } else if (headers !== undefined) {
       throw new TypeError('The provided value is not of type \'(sequence<sequence<ByteString>> or record<ByteString, ByteString>)\'')
     }
   }

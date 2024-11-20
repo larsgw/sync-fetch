@@ -38,7 +38,8 @@
   "homepage": "https://github.com/larsgw/sync-fetch#readme",
   "dependencies": {
     "node-fetch": "^3.3.2",
-    "timeout-signal": "^2.0.0"
+    "timeout-signal": "^2.0.0",
+    "whatwg-mimetype": "^4.0.0"
   },
   "devDependencies": {
     "@ungap/url-search-params": "^0.2.2",

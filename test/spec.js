@@ -1590,35 +1590,33 @@ describe('node-fetch', () => {
     expect(res.status).to.equal(200)
   })
 
-  /* eslint-disable */
-  it.skip('should support reading blob as text', function () {
+  it('should support reading blob as text', function () {
     return new Response('hello')
       .blob()
-      .then(blob => blob.text())
+      .text()
       .then(body => {
         expect(body).to.equal('hello')
       })
   })
 
-  it.skip('should support reading blob as arrayBuffer', function () {
-    return new Response(`hello`)
+  it('should support reading blob as arrayBuffer', function () {
+    return new Response('hello')
       .blob()
-      .then(blob => blob.arrayBuffer())
+      .arrayBuffer()
       .then(ab => {
         const str = String.fromCharCode.apply(null, new Uint8Array(ab))
         expect(str).to.equal('hello')
       })
   })
 
-  it.skip('should support reading blob as stream', function () {
-    return new Response(`hello`)
-      .blob()
-      .then(blob => streamToPromise(blob.stream(), data => {
-        const str = data.toString()
-        expect(str).to.equal('hello')
-      }))
+  it('should support reading blob as stream', function () {
+    return streamToPromise(new Response('hello').blob().stream(), data => {
+      const str = Buffer.from(data).toString()
+      expect(str).to.equal('hello')
+    })
   })
 
+  /* eslint-disable */
   it.skip('should support blob round-trip', function () {
     const url = `${base}hello`
 
@@ -2102,21 +2100,18 @@ describe('Response', function () {
     expect(result.toString()).to.equal('a=1')
   })
 
-  /* eslint-disable */
-  it.skip('should support blob() method', function () {
+  it('should support blob() method', function () {
     const res = new Response('a=1', {
       method: 'POST',
       headers: {
         'Content-Type': 'text/plain'
       }
     })
-    return res.blob().then(function (result) {
-      expect(result).to.be.an.instanceOf(Blob)
-      expect(result.size).to.equal(3)
-      expect(result.type).to.equal('text/plain')
-    })
+    const result = res.blob()
+    expect(result).to.be.an.instanceOf(Blob)
+    expect(result.size).to.equal(3)
+    expect(result.type).to.equal('text/plain')
   })
-  /* eslint-enable */
 
   it('should support clone() method', function () {
     const body = Buffer.from('a=1')
@@ -2350,21 +2345,18 @@ describe('Request', function () {
     expect(result.toString()).to.equal('a=1')
   })
 
-  /* eslint-disable */
-  it.skip('should support blob() method', function () {
+  it('should support blob() method', function () {
     const url = base
-    var req = new Request(url, {
+    const req = new Request(url, {
       method: 'POST',
       body: Buffer.from('a=1')
     })
     expect(req.url).to.equal(url)
-    return req.blob().then(function (result) {
-      expect(result).to.be.an.instanceOf(Blob)
-      expect(result.size).to.equal(3)
-      expect(result.type).to.equal('')
-    })
+    const result = req.blob()
+    expect(result).to.be.an.instanceOf(Blob)
+    expect(result.size).to.equal(3)
+    expect(result.type).to.equal('')
   })
-  /* eslint-enable */
 
   it.skip('should support arbitrary url', function () {
     const url = 'anything'

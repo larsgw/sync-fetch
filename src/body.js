@@ -1,7 +1,32 @@
 const Stream = require('stream')
+const MIMEType = require('whatwg-mimetype')
 const { FetchError } = require('./error.js')
 
 const _state = Symbol('SyncFetch Internals')
+
+// https://fetch.spec.whatwg.org/#concept-body-mime-type
+function getMimeType (body) {
+  // https://fetch.spec.whatwg.org/#concept-header-extract-mime-type
+  if (!body.headers.has('content-type')) {
+    return null
+  }
+
+  let essence = null
+  let charset = null
+  let mimeType = null
+  for (const type of body.headers.raw()['content-type']) {
+    mimeType = new MIMEType(type)
+
+    if (mimeType.essence !== essence) {
+      charset = mimeType.parameters.get('charset') ?? null
+      essence = mimeType.essence
+    } else if (!mimeType.parameters.has('charset') && charset !== null) {
+      mimeType.parameters.set('charset', charset)
+    }
+  }
+
+  return mimeType.toString()
+}
 
 class Body {
   static mixin (proto) {
@@ -45,7 +70,10 @@ class Body {
   }
 
   blob () {
-    throw new FetchError('blob not implemented')
+    checkBody(this)
+    return new Blob([this.arrayBuffer()], {
+      type: getMimeType(this) ?? ''
+    })
   }
 
   get body () {

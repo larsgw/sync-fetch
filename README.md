@@ -24,7 +24,7 @@ const metadata = fetch('https://doi.org/10.7717/peerj-cs.214', {
     Accept: 'application/vnd.citationstyles.csl+json'
   }
 }).json()
-// json(), arrayBuffer(), text() and buffer() supported
+// arrayBuffer(), blob(), buffer(), json(), and text() supported
 ```
 
 ## Limitations
@@ -34,6 +34,7 @@ const metadata = fetch('https://doi.org/10.7717/peerj-cs.214', {
   - Does not support `Stream` or `Blob` as input body since they cannot be read or serialized synchronously
   - Does not support `FormData` as input body yet as it has no built-in method to be serialized
   - Does not support the non-spec `agent` option as its value cannot be serialized
+  - Does not support non-standard `textConverted()` method on `SyncResponse` and `SyncRequest`
 
 ### Browser
 
@@ -43,5 +44,5 @@ const metadata = fetch('https://doi.org/10.7717/peerj-cs.214', {
     - `headers`
     - `credentials` (but not `omit`)
     - (Non-spec) `timeout`
-  - The non-standard `buffer()` method is not supported
+  - The non-standard `buffer()` and `textConverted()` methods are not supported
   - CORS limitations apply, of course (note they may be stricter for synchronous requests)

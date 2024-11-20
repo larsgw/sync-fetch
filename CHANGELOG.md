@@ -1,3 +1,12 @@
+# [0.6.0-2](https://github.com/larsgw/sync-fetch/compare/v0.6.0-1...v0.6.0-2) (2024-11-20)
+
+
+### Features
+
+* add support for SyncResponse#blob() in Node.js ([6b1e85c](https://github.com/larsgw/sync-fetch/commit/6b1e85c031d81ba1826be768e3d25b26b721e786))
+
+
+
 # [0.6.0-1](https://github.com/larsgw/sync-fetch/compare/v0.6.0-0...v0.6.0-1) (2024-11-20)
 
 

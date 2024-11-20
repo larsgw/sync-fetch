@@ -1495,15 +1495,13 @@ describe('node-fetch', () => {
     expect(r1.text()).to.equal('{"name":"value"}')
   })
 
-  /* eslint-disable */
-  it.skip('should allow cloning a json response, and then log it as text response', function () {
+  it('should allow cloning a json response, and then log it as text response', function () {
     const url = `${base}json`
     const res = fetch(url)
     const r1 = res.clone()
     expect(res.json()).to.deep.equal({ name: 'value' })
     expect(r1.text()).to.equal('{"name":"value"}')
   })
-  /* eslint-enable */
 
   it('should allow cloning a json response, first log as text response, then return json object', function () {
     const url = `${base}json`
@@ -1568,17 +1566,15 @@ describe('node-fetch', () => {
     expect(res.status).to.equal(200)
   })
 
-  /* eslint-disable */
-  it.skip('should support fetch with Node.js URL object', function () {
+  it('should support fetch with Node.js URL object', function () {
     const url = `${base}hello`
-    const urlObj = url.parse(url)
+    const urlObj = new URL(url)
     const req = new Request(urlObj)
     const res = fetch(req)
     expect(res.url).to.equal(url)
     expect(res.ok).to.be.true
     expect(res.status).to.equal(200)
   })
-  /* eslint-enable */
 
   it('should support fetch with WHATWG URL object', function () {
     const url = `${base}hello`

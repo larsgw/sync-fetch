@@ -31,8 +31,8 @@ const metadata = fetch('https://doi.org/10.7717/peerj-cs.214', {
 
 ### Node.js
 
-  - Does not support `Stream`s (or `FormData`) as input bodies since they cannot be read or serialized synchronously
-  - Does not support `Blob`s as input bodies since they're too complex
+  - Does not support `Stream` or `Blob` as input body since they cannot be read or serialized synchronously
+  - Does not support `FormData` as input body yet as it has no built-in method to be serialized
   - Does not support the non-spec `agent` option as its value cannot be serialized
 
 ### Browser

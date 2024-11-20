@@ -9,8 +9,10 @@ Synchronous wrapper around the Fetch API. Uses [`node-fetch`](https://github.com
 
 In the browser, a browserify bundle can be loaded from CDNs like unpkg.com.
 
-    <script src="https://unpkg.com/sync-fetch"></script>
-    <script src="https://unpkg.com/sync-fetch@VERSION"></script>
+```html
+<script src="https://unpkg.com/sync-fetch"></script>
+<script src="https://unpkg.com/sync-fetch@VERSION"></script>
+```
 
 ## Use
 

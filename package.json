@@ -1,6 +1,6 @@
 {
   "name": "sync-fetch",
-  "version": "0.6.0-0",
+  "version": "0.6.0-1",
   "description": "Synchronous version of the Fetch API",
   "main": "index.js",
   "browser": "browser.js",

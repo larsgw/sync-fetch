@@ -1,3 +1,12 @@
+# [0.6.0-1](https://github.com/larsgw/sync-fetch/compare/v0.6.0-0...v0.6.0-1) (2024-11-20)
+
+
+### Bug Fixes
+
+* fix handling of duplicate headers ([b3460ca](https://github.com/larsgw/sync-fetch/commit/b3460ca85c94c237ed389180be4f6c2ae333e805))
+
+
+
 # [0.6.0-0](https://github.com/larsgw/sync-fetch/compare/v0.5.2...v0.6.0-0) (2024-11-19)
 
 

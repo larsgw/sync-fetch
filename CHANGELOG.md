@@ -1,3 +1,7 @@
+# [0.6.0](https://github.com/larsgw/sync-fetch/compare/v0.6.0-2...v0.6.0) (2026-01-01)
+
+
+
 # [0.6.0-2](https://github.com/larsgw/sync-fetch/compare/v0.6.0-1...v0.6.0-2) (2024-11-20)
 
 

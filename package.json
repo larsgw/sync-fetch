@@ -56,6 +56,6 @@
     "string-to-arraybuffer": "^1.0.2"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20.19.0"
   }
 }

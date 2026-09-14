@@ -1,5 +1,5 @@
 const Stream = require('stream')
-const MIMEType = require('whatwg-mimetype')
+const { MIMEType } = require('whatwg-mimetype')
 const { FetchError } = require('./error.js')
 
 const _state = Symbol('SyncFetch Internals')

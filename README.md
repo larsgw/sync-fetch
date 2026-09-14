@@ -1,5 +1,6 @@
 # sync-fetch
-Synchronous wrapper around the Fetch API. Uses [`node-fetch`](https://github.com/bitinn/node-fetch) under the hood, and for some input-parsing code and test cases too.
+Synchronous wrapper around the Fetch API. Uses [`node-fetch`](https://github.com/bitinn/node-fetch).
+For a package using version of `fetch` built into Node.js, see [sync-fetch-undici](https://npmjs.com/package/sync-fetch-undici).
 
 [![npm](https://img.shields.io/npm/v/sync-fetch?style=flat-square)](https://npmjs.com/package/sync-fetch)
 [![npm monthly downloads](https://img.shields.io/npm/dm/sync-fetch?style=flat-square)](https://npm-stat.com/charts.html?package=sync-fetch)
@@ -33,7 +34,8 @@ const metadata = fetch('https://doi.org/10.7717/peerj-cs.214', {
 ### Node.js
 
   - Does not support `Stream` or `Blob` as input body since they cannot be read or serialized synchronously
-  - Does not support `FormData` as input body yet as it has no built-in method to be serialized
+  - Does not support `FormData` as input body yet as it can contain a `Blob`
+  - Does not support `signal` as it cannot be implemented synchronously
   - Does not support the non-spec `agent` option as its value cannot be serialized
   - Does not support non-standard `textConverted()` method on `SyncResponse` and `SyncRequest`
 

@@ -1,5 +1,26 @@
+# [0.7.0](https://github.com/larsgw/sync-fetch/compare/v0.6.0...v0.7.0) (2026-09-14)
+
+* chore!: drop Node.js 18 support ([7bcd655](https://github.com/larsgw/sync-fetch/commit/7bcd6550936eb12eeb226f486bc128b8e8595884))
+* chore(npm)!: drop Node.js 18 support ([edfe0d2](https://github.com/larsgw/sync-fetch/commit/edfe0d24f7b4594f7e19928a1f5852393b05e617))
+* chore!: drop Node.js 20 support ([e5d2c41](https://github.com/larsgw/sync-fetch/commit/e5d2c4112140dde2c1c0ed01bdd650af506cded7))
+
+
 # [0.6.0](https://github.com/larsgw/sync-fetch/compare/v0.6.0-2...v0.6.0) (2026-01-01)
 
+
+### Bug Fixes
+
+* fix handling of duplicate headers ([b3460ca](https://github.com/larsgw/sync-fetch/commit/b3460ca85c94c237ed389180be4f6c2ae333e805))
+
+
+### Code Refactoring
+
+* upgrade to node-fetch 3 ([071930c](https://github.com/larsgw/sync-fetch/commit/071930cf6e37f9a72afc912fcb17c7f93597b018))
+
+
+### BREAKING CHANGES
+
+* drop support for Node 14, 16; upgrade to node-fetch 3
 
 
 # [0.6.0-2](https://github.com/larsgw/sync-fetch/compare/v0.6.0-1...v0.6.0-2) (2024-11-20)
